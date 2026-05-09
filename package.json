@@ -1,6 +1,7 @@
 {
   "name": "autoteile26",
   "version": "1.0.0",
+  "license": "MIT",
   "private": true,
   "workspaces": [
     "packages/config/*",
@@ -9,11 +10,24 @@
   ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
+    "build:web": "npm run build --workspace=@autoteile26/web",
+    
+    "start": "echo \"To be implemented\" && exit 1",
     "start:web": "npm run start --workspace=@autoteile26/web",
+    
+    "dev": "echo \"To be implemented\" && exit 1",
     "dev:web": "npm run dev --workspace=@autoteile26/web",
+    
     "test": "npm run test --workspaces --if-present",
+    "test:web": "npm run test --workspace=@autoteile26/web",
+    
     "lint": "npm run lint --workspaces --if-present",
-    "setup": "cp .env.default .env"
+    "lint:web": "npm run lint --workspace=@autoteile26/web",
+
+    "setup": "shx cp .env.default .env"
   },
-  "license": "MIT"
+  
+  "devDependencies": {
+    "shx": "^0.4.0"
+  }
 }
