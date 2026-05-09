@@ -1,0 +1,12 @@
+{
+  "name": "@autoteile26/service",
+  "version": "1.0.0",
+  "license": "MIT",
+  "scripts": {
+    "dev": "node --watch src/startup.ts",
+    "start": "node src/startup.ts"
+  },
+  "dependencies": {
+    "@autoteile26/express-config": "*"
+  }
+}

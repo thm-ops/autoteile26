@@ -1,5 +1,8 @@
 # Dependencies
 node_modules
 
+# Vitest coverage folder
+coverage
+
 # Credentials
 .env
