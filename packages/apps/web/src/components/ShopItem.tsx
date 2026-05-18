@@ -1,10 +1,6 @@
 import Image from "next/image";
-import {ProductView} from "@/src/domain/product/product.view";
 import {formatPrice} from "@/src/utils/formatPrice";
-
-type ShopItemProps = {
-    product: ProductView
-}
+import {ProductView} from "@/src/domain/product"
 
 export default function ShopItem({
                                      product: {
