@@ -1,9 +1,15 @@
 import Image from "next/image";
+import Link from "next/link";
 import {formatPrice} from "@/src/utils/formatPrice";
 import {ProductView} from "@/src/domain/product"
 
+type ShopItemProps = {
+    product: ProductView
+}
+
 export default function ShopItem({
                                      product: {
+                                         id,
                                          name,
                                          description,
                                          price,
@@ -30,6 +36,12 @@ export default function ShopItem({
             <div className="px-6 pt-4 pb-2">
                 <p>{formattedPrice}</p>
             </div>
+            <Link
+                href={`/products/${id}`}
+                className="bg-blue-600 ml-6 p-3 mb-3 rounded-2xl inline-block"
+            >
+                Details ansehen
+            </Link>
         </div>
     )
 }
