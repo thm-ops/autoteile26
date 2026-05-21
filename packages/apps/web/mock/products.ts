@@ -6,7 +6,7 @@ export const products: ProductView[] = [
         id: "1",
         name: "Sommerreifen Premium",
         price: 8999,
-        description: "Hochwertige Sommerreifen mit optimaler Bodenhaftung und Bremsverhalen."
+        description: "Hochwertige Sommerreifen mit optimaler Bodenhaftung und Bremsverhalten."
     },
     {
         id: "2",
