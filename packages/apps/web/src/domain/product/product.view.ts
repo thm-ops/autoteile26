@@ -10,6 +10,8 @@ export type ProductView = {
     description: string;
     /** image of the product */
     image?: string;
+    /** text describing the image for screenreaders */
+    imageAlt?: string;
     /** price of the product in cents */
     price: number;
 };

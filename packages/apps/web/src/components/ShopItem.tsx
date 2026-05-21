@@ -13,7 +13,8 @@ export default function ShopItem({
                                          name,
                                          description,
                                          price,
-                                         image
+                                         image,
+                                         imageAlt
                                      }
                                  }: ShopItemProps) {
     const formattedPrice = formatPrice(price);
@@ -24,7 +25,7 @@ export default function ShopItem({
                 src={image || "https://placehold.co/600x400"}
                 width={600}
                 height={400}
-                alt={"Placeholder Image"}
+                alt={imageAlt || "Placeholder Image"}
                 unoptimized={true}
             />
             <div className="px-6 py-4">
