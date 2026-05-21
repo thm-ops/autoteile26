@@ -1,0 +1,14 @@
+services:
+  app:
+    image: autoteile26-web:prod
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile.prod
+    container_name: autoteile26-web-prod
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
