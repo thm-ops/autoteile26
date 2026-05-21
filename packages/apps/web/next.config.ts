@@ -4,7 +4,11 @@ const nextConfig: NextConfig = {
   /* config options here */
     images: {
         remotePatterns: [
-            new URL("https://placehold.co/**")
+            {
+                protocol: "https",
+                hostname: "placeholder.co",
+                pathname: "/**"
+            }
         ]
     }
 };
