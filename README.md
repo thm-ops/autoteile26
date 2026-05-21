@@ -2,26 +2,69 @@
 
 [Discord](https://discord.gg/Ktd3vjM4ud)
 
---- 
 
-## Development
+- [Development](#development) 
+- [Production](#production) 
+- [Docker Debugging & Diagnostics](#docker-debugging--diagnostics)
+- [Docker Compose Lifecycle Overview](#docker-compose-lifecycle-overview) 
 
-Start the application in development mode:
+---
+
+---
+
+
+# Development
+
+## Start the Development Environment
 
 ```bash
 npm run dev
 ```
 
-Alternatively, start the development environment directly using Docker Compose:
+or directly via Docker Compose:
 
 ```bash
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-Stop the development containers:
+---
+
+## Restart Stopped Development Containers
+
+```bash
+npm run start:dev
+```
+
+or:
+
+```bash
+docker compose -f docker-compose.dev.yml start
+```
+
+---
+
+## Stop Development Containers
+
+Stops the running containers while preserving them.
 
 ```bash
 npm run stop:dev
+```
+
+or:
+
+```bash
+docker compose -f docker-compose.dev.yml stop
+```
+
+---
+
+## Remove Development Containers
+
+Removes containers and Docker Compose networks completely.
+
+```bash
+npm run down:dev
 ```
 
 or:
@@ -32,21 +75,39 @@ docker compose -f docker-compose.dev.yml down
 
 ---
 
-## Production
+# Production
 
-Build and start the production environment:
+## Start the Production Environment
 
 ```bash
 npm run prod
 ```
 
-Alternatively, start the production environment directly using Docker Compose:
+or directly via Docker Compose:
 
 ```bash
 docker compose -f docker-compose.prod.yml up --build
 ```
 
-Stop the production containers:
+---
+
+## Restart Stopped Production Containers
+
+```bash
+npm run start:prod
+```
+
+or:
+
+```bash
+docker compose -f docker-compose.prod.yml start
+```
+
+---
+
+## Stop Production Containers
+
+Stops the running containers while preserving them.
 
 ```bash
 npm run stop:prod
@@ -55,27 +116,42 @@ npm run stop:prod
 or:
 
 ```bash
+docker compose -f docker-compose.prod.yml stop
+```
+
+---
+
+## Remove Production Containers
+
+Removes containers and Docker Compose networks completely.
+
+```bash
+npm run down:prod
+```
+
+or:
+
+```bash
 docker compose -f docker-compose.prod.yml down
 ```
 
-View the production logs:
+---
+
+## Production Logs
 
 ```bash
 docker logs -f autoteile26-web-prod
 ```
 
-> Note:
 > The production image uses a distroless runtime image.
-> Therefore, it does not include a shell such as `sh` or `bash`.
+> Therefore, no shell such as `sh` or `bash` is available.
 > Shell-based debugging is only available in the development container.
 
 ---
 
-## Docker Debugging & Diagnostics
+# Docker Debugging & Diagnostics
 
-### View Container Logs
-
-Display the logs of a running container:
+## View Container Logs
 
 ```bash
 docker logs <container-name>
@@ -95,9 +171,7 @@ docker logs -f <container-name>
 
 ---
 
-### Inspect Container Information
-
-Display detailed metadata and runtime information about a container:
+## Inspect Container Information
 
 ```bash
 docker inspect <container-name>
@@ -105,9 +179,7 @@ docker inspect <container-name>
 
 ---
 
-### Access the Development Container Shell
-
-Open an interactive shell inside the development container:
+## Open a Shell Inside the Development Container
 
 ```bash
 docker exec -it <container-name> sh
@@ -120,7 +192,18 @@ docker exec -it autoteile26-app-1 sh
 ```
 ---
 
-### Exit or Detach from a Container
+# Docker Compose Lifecycle Overview
+
+| Command | Description |
+|---|---|
+| `up --build` | Builds and starts the containers |
+| `start` | Starts previously stopped containers |
+| `stop` | Stops containers without removing them |
+| `down` | Removes containers and Docker Compose networks |
+
+---
+
+# Exit or Detach from a Container
 
 Exit the shell normally:
 
