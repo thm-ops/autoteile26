@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import {formatPrice} from "@/src/utils/formatPrice";
-import {ProductView} from "@/src/domain/product"
+import {formatPrice} from "@/app/utils/formatPrice";
+import {ProductView} from "@/app/domain/product"
 
 type ShopItemProps = {
     product: ProductView

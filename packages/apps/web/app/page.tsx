@@ -1,4 +1,4 @@
-import ShopItems from "@/src/components/ShoptItems";
+import ShopItems from "@/app/components/product/ShopItems";
 
 export default function Home() {
   return (

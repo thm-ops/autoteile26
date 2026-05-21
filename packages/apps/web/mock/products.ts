@@ -1,4 +1,4 @@
-import {ProductView} from "@/src/domain/product/product.view";
+import {ProductView} from "@/app/domain/product/product.view";
 
 
 export const products: ProductView[] = [

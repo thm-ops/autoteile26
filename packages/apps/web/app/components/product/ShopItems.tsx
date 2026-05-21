@@ -1,5 +1,5 @@
 import {products} from "@/mock/products";
-import ShopItem from "@/src/components/ShopItem";
+import ShopItem from "@/app/components/product/ShopItem";
 
 export default function ShopItems() {
     return (
