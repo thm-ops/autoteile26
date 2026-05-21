@@ -1,0 +1,13 @@
+services:
+  app:
+    build: 
+      context: .
+      dockerfile: docker/app/Dockerfile.dev
+    # Set the user to the current host user to avoid permission issues with mounted volumes
+    user: "${UID}:${GID}"
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    command: npm run dev --workspace=@autoteile26/web -- --hostname 0.0.0.0
