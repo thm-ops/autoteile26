@@ -5,7 +5,7 @@ services:
 
     build:
       context: .
-      dockerfile: docker/app/Dockerfile.dev
+      dockerfile: packages/apps/web/Dockerfile.dev
       args:
         NODE_VERSION: ${NODE_VERSION}
         APP_PORT: ${APP_PORT}
