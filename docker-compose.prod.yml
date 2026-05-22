@@ -1,14 +1,31 @@
 services:
   app:
-    image: autoteile26-web:prod
+    image: ${PROD_IMAGE_NAME}
+    container_name: ${PROD_CONTAINER_NAME}
+
     build:
       context: .
       dockerfile: docker/app/Dockerfile.prod
-    container_name: autoteile26-web-prod
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+        DISTROLESS_NODE_IMAGE: ${DISTROLESS_NODE_IMAGE}
+        APP_PORT: ${APP_PORT}
+
     restart: unless-stopped
+
     ports:
-      - "3000:3000"
+      - "${APP_PORT}:${APP_PORT}"
+
     environment:
-      NODE_ENV: production
-      HOSTNAME: 0.0.0.0
-      PORT: 3000
+      NODE_ENV: ${NODE_ENV_PROD}
+      HOSTNAME: ${APP_HOSTNAME}
+      PORT: ${APP_PORT}
+
+    command:
+      - node_modules/next/dist/bin/next
+      - start
+      - packages/apps/web
+      - -H
+      - ${APP_HOSTNAME}
+      - -p
+      - "${APP_PORT}"

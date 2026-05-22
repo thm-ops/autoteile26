@@ -9,6 +9,10 @@
 - [Docker Compose Lifecycle Overview](#docker-compose-lifecycle-overview) 
 
 ---
+## Requirements
+
+    Node ^24
+    NPM ^11
 
 ---
 
