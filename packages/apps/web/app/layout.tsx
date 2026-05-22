@@ -13,7 +13,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html lang="de" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
         
-        {/* Header-Baustein */}
+        {/* Header*/}
         <Header /> 
 
         <main className="flex-1">

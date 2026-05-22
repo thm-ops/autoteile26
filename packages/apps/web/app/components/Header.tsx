@@ -1,4 +1,3 @@
-// app/components/Header.tsx
 import Link from "next/link";
 
 export default function Header() {
@@ -6,18 +5,18 @@ export default function Header() {
     <header className="w-full bg-white border-b border-slate-200 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         
-        {/* Link zur Startseite */}
+        {/* Link to the Startingpage */}
         <Link href="/" className="text-xl font-bold text-slate-900 hover:opacity-80 transition-opacity">
           MeinShop
         </Link>
 
-        {/* Navigation & Warenkorb */}
+        {/* Navigation & shopping cart */}
         <div className="flex items-center gap-6">
           <Link href="/" className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">
             Startseite
           </Link>
           
-          {/* Warenkorb-Symbol */}
+          {/* shopping cart */}
           <button 
             type="button" 
             className="relative p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-all"
