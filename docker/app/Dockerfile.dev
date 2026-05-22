@@ -9,7 +9,8 @@
 # - Uses Docker build cache for faster dependency installation
 # - Starts the Next.js development server on port 3000
 
-FROM node:24-alpine
+ARG NODE_VERSION=24-alpine
+FROM node:${NODE_VERSION}
 
 LABEL maintainer="volknichtx" \
       version="1.0" \
@@ -33,7 +34,8 @@ COPY --chown=node:node . .
 USER node
 
 # Expose development server port
-EXPOSE 3000
+ARG APP_PORT=3000
+EXPOSE ${APP_PORT}
 
 # Start the Next.js development server
-CMD ["npm", "run", "dev", "--workspace=@autoteile26/web", "--", "--hostname", "0.0.0.0"]
+CMD ["npm", "run", "dev"]
