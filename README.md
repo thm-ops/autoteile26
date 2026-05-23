@@ -40,6 +40,14 @@ Docker handles the port forwarding automatically through Docker Compose port map
 
 # Development
 
+## Installing dependencies 
+Install dependencies and create the local environment file:
+
+```bash
+npm install
+npm run setup
+```
+
 ## Start the Development Environment
 
 ```bash
