@@ -1,0 +1,48 @@
+import Image from "next/image";
+import Link from "next/link";
+import {formatPrice} from "@/app/utils/formatPrice";
+import {ProductView} from "@/app/domain/product"
+
+type ShopItemProps = {
+    product: ProductView
+}
+
+export default function ShopItem({
+                                     product: {
+                                         id,
+                                         name,
+                                         description,
+                                         price,
+                                         image,
+                                         imageAlt
+                                     }
+                                 }: ShopItemProps) {
+    const formattedPrice = formatPrice(price);
+
+    return (
+        <div className="max-w-sm rounded overflow-hidden shadow-lg bg-card">
+            <Image
+                src={image || "https://placehold.co/600x400"}
+                width={600}
+                height={400}
+                alt={imageAlt || "Placeholder Image"}
+                unoptimized={true}
+            />
+            <div className="px-6 py-4">
+                <p className="font-bold text-xl mb-2">{name}</p>
+                <p className="text-foreground text-base">
+                    {description}
+                </p>
+            </div>
+            <div className="px-6 pt-4 pb-2">
+                <p>{formattedPrice}</p>
+            </div>
+            <Link
+                href={`/products/${id}`}
+                className="bg-blue-600 ml-6 p-3 mb-3 rounded-2xl inline-block"
+            >
+                Details ansehen
+            </Link>
+        </div>
+    )
+}
