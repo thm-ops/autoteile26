@@ -9,6 +9,17 @@
     "packages/libs/*"
   ],
   "scripts": {
+    "dev": "cp -n .env.default .env && docker compose -f docker-compose.dev.yml up --build",
+    "prod": "cp -n .env.default .env && docker compose -f docker-compose.prod.yml up --build",
+    "start": "npm run start:dev && npm run start:prod",
+    "start:dev": "docker compose -f docker-compose.dev.yml start",
+    "start:prod": "docker compose -f docker-compose.prod.yml start",
+    "stop": "npm run stop:dev && npm run stop:prod",
+    "stop:dev": "docker compose -f docker-compose.dev.yml stop",
+    "stop:prod": "docker compose -f docker-compose.prod.yml stop",
+    "down": "npm run down:dev && npm run down:prod",
+    "down:dev": "docker compose -f docker-compose.dev.yml down",
+    "down:prod": "docker compose -f docker-compose.prod.yml down",
     "build": "npm run build --workspaces --if-present",
     "build:web": "npm run build --workspace=@autoteile26/web",
     
