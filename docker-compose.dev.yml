@@ -1,5 +1,5 @@
 services:
-  app:
+  app-dev:
     image: ${DEV_IMAGE_NAME}
     container_name: ${DEV_CONTAINER_NAME}
 
