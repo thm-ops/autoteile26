@@ -2,7 +2,8 @@
 
 [Discord](https://discord.gg/Ktd3vjM4ud)
 
-
+--- 
+- [Port Mapping](#port-mapping)
 - [Development](#development) 
 - [Production](#production) 
 - [Docker Debugging & Diagnostics](#docker-debugging--diagnostics)
@@ -13,6 +14,26 @@
 
     Node ^24
     NPM ^11
+
+---
+
+## Port Mapping
+
+Both development and production containers run internally on port `3000`.
+
+Different host ports are used to allow both environments to run in parallel without port conflicts:
+
+| Environment | Host Port | Container Port |
+|---|---|---|
+| Development | `3001` | `3000` |
+| Production | `3002` | `3000` |
+
+Examples:
+
+- Development → http://localhost:3001
+- Production → http://localhost:3002
+
+Docker handles the port forwarding automatically through Docker Compose port mappings.
 
 ---
 
