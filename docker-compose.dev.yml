@@ -10,10 +10,10 @@ services:
         NODE_VERSION: ${NODE_VERSION}
         APP_PORT: ${APP_PORT}
 
-    user: "${UID}:${GID}"
+    user: "${UID:-1000}:${GID:-1000}"
 
     ports:
-      - "${APP_PORT}:${APP_PORT}"
+      - "${HOST_PORT_DEV}:${APP_PORT}"
 
     environment:
       NODE_ENV: ${NODE_ENV_DEV}
