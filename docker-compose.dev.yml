@@ -24,6 +24,7 @@ services:
       - ./:/app
       - /app/node_modules
       - /app/packages/apps/web/node_modules
+      - nextjs_cache:/app/packages/apps/web/.next
 
     command: 
       - npm
@@ -35,3 +36,6 @@ services:
       - ${APP_HOSTNAME}
       - --port
       - ${APP_PORT}
+
+volumes:
+  nextjs_cache:
