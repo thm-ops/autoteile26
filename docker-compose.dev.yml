@@ -23,6 +23,7 @@ services:
     volumes:
       - ./:/app
       - /app/node_modules
+      - /app/packages/apps/web/node_modules
 
     command: 
       - npm
