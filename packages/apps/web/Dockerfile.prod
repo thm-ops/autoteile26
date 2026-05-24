@@ -18,13 +18,13 @@
 # - next.config.ts/js must contain: output: "standalone"
 # -----------------------------------------------------------------------------
 
-ARG NODE_VERSION=24-alpine
+ARG NODE_VERSION_PROD=24-slim
 ARG DISTROLESS_NODE_IMAGE=gcr.io/distroless/nodejs24-debian12
 
 # -----------------------------------------------------------------------------
 # Stage 1: Install dependencies
 # -----------------------------------------------------------------------------
-FROM node:${NODE_VERSION} AS deps
+FROM node:${NODE_VERSION_PROD} AS deps
 
 LABEL maintainer="volknichtx" \
       version="1.0" \
@@ -44,7 +44,7 @@ RUN --mount=type=cache,target=/root/.npm npm ci
 # -----------------------------------------------------------------------------
 # Stage 2: Build the application
 # -----------------------------------------------------------------------------
-FROM node:${NODE_VERSION} AS builder
+FROM node:${NODE_VERSION_PROD} AS builder
 
 # Set working directory
 WORKDIR /app
@@ -74,14 +74,14 @@ ARG APP_PORT=3000
 ENV NODE_ENV=production
 
 # Copy the complete built application
-COPY --from=builder /app ./
+COPY --from=builder --chown=nonroot:nonroot /app ./
 
 USER nonroot
 
 EXPOSE ${APP_PORT}
 
 # Start Next.js without npm, because distroless has no shell/npm
-CMD ["node_modules/next/dist/bin/next", "start", "packages/apps/web"]
+CMD ["packages/apps/web/server.js"]
 
 # As an alternative we can start the prod-container with as a standalone node process, 
 # but this requires the next.config.ts/js to contain: output: "standalone"
