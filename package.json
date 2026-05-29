@@ -1,46 +1,12 @@
 {
-  "name": "autoteile26",
+  "name": "@autoteile26/service",
   "version": "1.0.0",
   "license": "MIT",
-  "private": true,
-  "workspaces": [
-    "packages/config/*",
-    "packages/apps/*",
-    "packages/libs/*"
-  ],
   "scripts": {
-    "build": "npm run build --workspaces --if-present",
-    "build:web": "npm run build --workspace=@autoteile26/web",
-    
-    "start": "echo \"To be implemented\" && exit 1",
-    "start:web": "npm run start --workspace=@autoteile26/web",
-    
-    "dev": "echo \"To be implemented\" && exit 1",
-    "dev:web": "npm run dev --workspace=@autoteile26/web",
-    
-    "test": "npm run test --workspaces --if-present",
-    "test:web": "npm run test --workspace=@autoteile26/web",
-    
-    "lint": "npm run lint --workspaces --if-present",
-    "lint:web": "npm run lint --workspace=@autoteile26/web",
-
-    "setup": "shx cp .env.default .env",
-
-    "build:service": "npm run build --workspace=@autoteile26/service",
-    "format:service": "npm run format --workspace=@autoteile26/service",
-    "start:service": "npm run start --workspace=@autoteile26/service",
-    "start:dev:service": "npm run start:dev --workspace=@autoteile26/service",
-    "start:debug:service": "npm run start:debug --workspace=@autoteile26/service",
-    "start:prod:service": "npm run start:prod --workspace=@autoteile26/service",
-    "lint:service": "npm run lint --workspace=@autoteile26/service",
-    "test:service": "npm run test --workspace=@autoteile26/service",
-    "test:watch:service": "npm run test:watch --workspace=@autoteile26/service",
-    "test:cov:service": "npm run test:cov --workspace=@autoteile26/service",
-    "test:debug:service": "npm run test:debug --workspace=@autoteile26/service",
-    "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service"
+    "dev": "node --watch src/startup.ts",
+    "start": "node src/startup.ts"
   },
-  "devDependencies": {
-    "@vitest/coverage-v8": "^4.1.5",
-    "vitest": "^4.1.5"
+  "dependencies": {
+    "@autoteile26/express-config": "*"
   }
 }
