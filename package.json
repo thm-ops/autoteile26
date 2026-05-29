@@ -1,12 +1,55 @@
 {
-  "name": "@autoteile26/service",
+  "name": "autoteile26",
   "version": "1.0.0",
   "license": "MIT",
+  "private": true,
+  "workspaces": [
+    "packages/config/*",
+    "packages/apps/*",
+    "packages/libs/*"
+  ],
   "scripts": {
-    "dev": "node --watch src/startup.ts",
-    "start": "node src/startup.ts"
+    "dev": "cp -n .env.default .env && docker compose -f docker-compose.dev.yml up --build",
+    "prod": "cp -n .env.default .env && docker compose -f docker-compose.prod.yml up --build",
+    "start": "npm run start:dev && npm run start:prod",
+    "start:dev": "docker compose -f docker-compose.dev.yml start",
+    "start:prod": "docker compose -f docker-compose.prod.yml start",
+    "stop": "npm run stop:dev && npm run stop:prod",
+    "stop:dev": "docker compose -f docker-compose.dev.yml stop",
+    "stop:prod": "docker compose -f docker-compose.prod.yml stop",
+    "down": "npm run down:dev && npm run down:prod",
+    "down:dev": "docker compose -f docker-compose.dev.yml down",
+    "down:prod": "docker compose -f docker-compose.prod.yml down",
+    "build": "npm run build --workspaces --if-present",
+    "build:web": "npm run build --workspace=@autoteile26/web",
+
+    "start:web": "npm run start --workspace=@autoteile26/web",
+
+    "dev:web": "npm run dev --workspace=@autoteile26/web",
+    
+    "test": "npm run test --workspaces --if-present",
+    "test:web": "npm run test --workspace=@autoteile26/web",
+    
+    "lint": "npm run lint --workspaces --if-present",
+    "lint:web": "npm run lint --workspace=@autoteile26/web",
+
+    "setup": "shx cp .env.default .env",
+
+    "build:service": "npm run build --workspace=@autoteile26/service",
+    "format:service": "npm run format --workspace=@autoteile26/service",
+    "start:service": "npm run start --workspace=@autoteile26/service",
+    "start:dev:service": "npm run start:dev --workspace=@autoteile26/service",
+    "start:debug:service": "npm run start:debug --workspace=@autoteile26/service",
+    "start:prod:service": "npm run start:prod --workspace=@autoteile26/service",
+    "lint:service": "npm run lint --workspace=@autoteile26/service",
+    "test:service": "npm run test --workspace=@autoteile26/service",
+    "test:watch:service": "npm run test:watch --workspace=@autoteile26/service",
+    "test:cov:service": "npm run test:cov --workspace=@autoteile26/service",
+    "test:debug:service": "npm run test:debug --workspace=@autoteile26/service",
+    "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service"
   },
-  "dependencies": {
-    "@autoteile26/express-config": "*"
+  
+  "devDependencies": {
+    "shx": "^0.4.0"
   }
 }
