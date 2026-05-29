@@ -1,5 +1,5 @@
 {
-  "extends": "@autoteile26/ts-config/tsconfig.json",
+  "extends": "@autoteile26/ts-config",
   "compilerOptions": {
     "module": "nodenext",
     "moduleResolution": "nodenext",
