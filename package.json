@@ -23,10 +23,8 @@
     "build": "npm run build --workspaces --if-present",
     "build:web": "npm run build --workspace=@autoteile26/web",
     
-    "start": "echo \"To be implemented\" && exit 1",
     "start:web": "npm run start --workspace=@autoteile26/web",
     
-    "dev": "echo \"To be implemented\" && exit 1",
     "dev:web": "npm run dev --workspace=@autoteile26/web",
     
     "test": "npm run test --workspaces --if-present",

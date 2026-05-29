@@ -4,6 +4,7 @@
 
 --- 
 - [Port Mapping](#port-mapping)
+- [Database](#database)
 - [Development](#development) 
 - [Production](#production) 
 - [Docker Debugging & Diagnostics](#docker-debugging--diagnostics)
@@ -27,6 +28,7 @@ Different host ports are used to allow both environments to run in parallel with
 |---|---|---|
 | Development | `3001` | `3000` |
 | Production | `3002` | `3000` |
+| Development (PostgreSQL) | `5433` | `5432` |
 
 Examples:
 
@@ -34,6 +36,21 @@ Examples:
 - Production → http://localhost:3002
 
 Docker handles the port forwarding automatically through Docker Compose port mappings.
+
+---
+
+## Database
+The development environment includes a PostgreSQL container that starts
+automatically with the development stack.
+
+- The application connects to the database over the Docker Compose network
+  using the service name `db-dev` as host (not `localhost`).
+- Credentials and the connection string are defined in `.env` / `.env.default`
+  (`POSTGRES_USER`, `POSTGRES_PASSWORD`, `POSTGRES_DB`, `DATABASE_URL`).
+- Database data is persisted in a named volume and survives container restarts.
+
+The database is exposed on host port `5433` (see [Port Mapping](#port-mapping)),
+so you can also connect from the host, e.g. with a GUI client.
 
 ---
 
@@ -223,6 +240,18 @@ Example:
 ```bash
 docker exec -it autoteile26-app-1 sh
 ```
+
+---
+## Inspect the Database
+Check whether the database is accepting connections:
+```bash
+docker exec -it autoteile26-db-dev pg_isready -U autoteile26
+```
+Open a `psql` session:
+```bash
+docker exec -it autoteile26-db-dev psql -U autoteile26 -d autoteile26
+```
+
 ---
 
 # Docker Compose Lifecycle Overview
