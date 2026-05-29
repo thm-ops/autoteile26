@@ -15,6 +15,10 @@ services:
     ports:
       - "${HOST_PORT_DEV}:${APP_PORT}"
 
+    depends_on:
+      app-service-dev:
+        condition: service_healthy
+
     environment:
       NODE_ENV: ${NODE_ENV_DEV}
       PORT: ${APP_PORT}
@@ -35,6 +39,27 @@ services:
       - ${APP_HOSTNAME}
       - --port
       - ${APP_PORT}
+
+  app-service-dev:
+    build:
+      context: .
+      dockerfile: packages/apps/service/Dockerfile.dev
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+    ports:
+      # Map port 8080 on the host to port 3000 in the container, which is the default port for the service app
+      - "8080:3000"
+      # Debug port for Node.js, access: chrome://inspect > Open dedicated DevTools for Node > Add connection > localhost:9229 > Console
+      - "9229:9229"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+    volumes:
+      - ./packages/apps/service:/packages/apps/service
+      - /packages/apps/service/node_modules
 
   db-dev:
     image: postgres:${POSTGRES_VERSION}
