@@ -1,5 +1,4 @@
 {
-  "extends": "@autoteile26/ts-config",
   "compilerOptions": {
     "target": "ES2017",
     "lib": ["dom", "dom.iterable", "esnext"],
