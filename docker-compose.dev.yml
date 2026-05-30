@@ -46,20 +46,18 @@ services:
       dockerfile: packages/apps/service/Dockerfile.dev
       args:
         NODE_VERSION: ${NODE_VERSION}
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: ${NODE_ENV_DEV}
     ports:
       # Map port 8080 on the host to port 3000 in the container, which is the default port for the service app
       - "8080:3000"
       # Debug port for Node.js, access: chrome://inspect > Open dedicated DevTools for Node > Add connection > localhost:9229 > Console
       - "9229:9229"
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
-      start_period: 60s
     volumes:
       - ./packages/apps/service:/packages/apps/service
-      - /packages/apps/service/node_modules
+      - app-service-dev-node-modules:/packages/apps/service/node_modules
 
   db-dev:
     image: postgres:${POSTGRES_VERSION}
@@ -76,3 +74,4 @@ services:
 volumes:
   pgdata-dev:
     name: ${DB_VOLUME_DEV}
+  app-service-dev-node-modules:
