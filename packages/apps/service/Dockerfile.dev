@@ -29,6 +29,9 @@ COPY --chown=node:node packages/apps/service/package.json .
 RUN --mount=type=cache,target=/root/.npm \
     npm ci
 
+# Install curl for health checks
+RUN apk add --no-cache curl
+
 # Copy the rest of the application files (exluding node_modules) to the working directory
 COPY packages/apps/service .
 
@@ -37,6 +40,9 @@ USER node
 
 # Expose the application port
 EXPOSE 3000
+
+# https://docs.docker.com/reference/dockerfile/#healthcheck
+HEALTHCHECK CMD curl -f http://localhost:3000/api/health
 
 # Start the development server with debugging enabled
 CMD ["npm", "run", "start:debug"]
