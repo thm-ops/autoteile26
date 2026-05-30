@@ -11,16 +11,29 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        username: configService.get('POSTGRES_USER')!,
-        password: configService.get('POSTGRES_PASSWORD')!,
-        database: configService.get('POSTGRES_DB')!,
-        port: configService.get('POSTGRES_PORT')!,
-        host: configService.get('POSTGRES_HOST')!,
-        synchronize: configService.get('NODE_ENV')! === 'development',
-        logging: true,
-      }),
+      useFactory: (configService: ConfigService) => {
+        const isProd = configService.get('NODE_ENV') === 'production';
+        return {
+          type: 'postgres',
+          username: configService.get(
+            isProd ? 'POSTGRES_USER_PROD' : 'POSTGRES_USER',
+          )!,
+          password: configService.get(
+            isProd ? 'POSTGRES_PASSWORD_PROD' : 'POSTGRES_PASSWORD',
+          )!,
+          database: configService.get(
+            isProd ? 'POSTGRES_DB_PROD' : 'POSTGRES_DB',
+          )!,
+          port: configService.get(
+            isProd ? 'POSTGRES_PORT_PROD' : 'POSTGRES_DB_PORT',
+          )!,
+          host: configService.get(
+            isProd ? 'POSTGRES_HOST_PROD' : 'POSTGRES_HOST',
+          )!,
+          synchronize: !isProd,
+          logging: true,
+        };
+      },
     }),
     ConfigModule.forRoot(),
   ],
