@@ -25,6 +25,7 @@
 
     "start:web": "npm run start --workspace=@autoteile26/web",
 
+
     "dev:web": "npm run dev --workspace=@autoteile26/web",
     
     "test": "npm run test --workspaces --if-present",

@@ -28,6 +28,8 @@ services:
     volumes:
       - ./:/app
       - /app/node_modules
+      - /app/packages/apps/web/node_modules
+      - nextjs_cache:/app/packages/apps/web/.next
 
     command: 
       - npm
@@ -75,3 +77,4 @@ volumes:
   pgdata-dev:
     name: ${DB_VOLUME_DEV}
   app-service-dev-node-modules:
+  nextjs_cache:
