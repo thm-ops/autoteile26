@@ -23,7 +23,7 @@ services:
       NODE_ENV: ${NODE_ENV_DEV}
       PORT: ${APP_PORT}
       HOSTNAME: ${APP_HOSTNAME}
-      DATABASE_URL: ${DATABASE_URL}
+      API_BASE_URL: ${API_BASE_URL_DEV}
 
     volumes:
       - ./:/app
@@ -52,6 +52,9 @@ services:
       - .env
     environment:
       NODE_ENV: ${NODE_ENV_DEV}
+    depends_on:
+      db-dev:
+        condition: service_healthy
     ports:
       # Map port 8080 on the host to port 3000 in the container, which is the default port for the service app
       - "8080:3000"
@@ -68,6 +71,8 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost -p ${POSTGRES_PORT}"]
     ports:
       - "${HOST_PORT_DB_DEV}:${POSTGRES_PORT}"
     volumes:
