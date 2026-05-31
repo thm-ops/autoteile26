@@ -9,8 +9,8 @@
     "packages/libs/*"
   ],
   "scripts": {
-    "dev": "cp -n .env.default .env && docker compose -f docker-compose.dev.yml up --build",
-    "prod": "cp -n .env.default .env && docker compose -f docker-compose.prod.yml up --build",
+    "dev": "npm run setup && docker compose -f docker-compose.dev.yml up --build",
+    "prod": "npm run setup && docker compose -f docker-compose.prod.yml up --build",
     "start": "npm run start:dev && npm run start:prod",
     "start:dev": "docker compose -f docker-compose.dev.yml start",
     "start:prod": "docker compose -f docker-compose.prod.yml start",
@@ -22,20 +22,13 @@
     "down:prod": "docker compose -f docker-compose.prod.yml down",
     "build": "npm run build --workspaces --if-present",
     "build:web": "npm run build --workspace=@autoteile26/web",
-
     "start:web": "npm run start --workspace=@autoteile26/web",
-
-
     "dev:web": "npm run dev --workspace=@autoteile26/web",
-    
     "test": "npm run test --workspaces --if-present",
     "test:web": "npm run test --workspace=@autoteile26/web",
-    
     "lint": "npm run lint --workspaces --if-present",
     "lint:web": "npm run lint --workspace=@autoteile26/web",
-
     "setup": "shx cp .env.default .env",
-
     "build:service": "npm run build --workspace=@autoteile26/service",
     "format:service": "npm run format --workspace=@autoteile26/service",
     "start:service": "npm run start --workspace=@autoteile26/service",
@@ -49,7 +42,6 @@
     "test:debug:service": "npm run test:debug --workspace=@autoteile26/service",
     "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service"
   },
-  
   "devDependencies": {
     "shx": "^0.4.0"
   }
