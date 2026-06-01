@@ -38,7 +38,7 @@ services:
       context: .
       dockerfile: packages/apps/service/Dockerfile.prod
       args:
-        NODE_VERSION: ${NODE_VERSION}
+        NODE_VERSION_PROD: ${NODE_VERSION_PROD}
         DIRSTROLESS_NODE_IMAGE: ${DISTROLESS_NODE_IMAGE}
     env_file:
       - .env
