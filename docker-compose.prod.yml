@@ -48,10 +48,11 @@ services:
     ports:
       - "8088:3000"
     environment:
-      NODE_ENV: production
+      NODE_ENV: ${NODE_ENV_PROD}
 
   db-prod:
     image: postgres:${POSTGRES_VERSION}
+    container_name: ${DB_CONTAINER_NAME_PROD}
     environment:
       POSTGRES_USER: ${POSTGRES_USER_PROD}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD_PROD}
@@ -61,7 +62,8 @@ services:
     volumes:
       - pgdata-prod:/var/lib/postgresql/data
     ports:
-      - "5434:${POSTGRES_PORT_PROD}"
+      - "${HOST_PORT_DB_PROD}:${POSTGRES_PORT_PROD}"
 
 volumes:
   pgdata-prod:
+    name: ${DB_VOLUME_PROD}
