@@ -16,7 +16,7 @@ http
         res.on('end', () => {
             try {
                 const response = JSON.parse(body);
-                if (response.healthy === true) {
+                if (response.status === "ok") {
                     process.exit(0);
                 }
 
