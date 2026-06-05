@@ -61,6 +61,12 @@ docker compose -f docker-compose.dev.yml up --build -d
 npm run build --workspace=@autoteile26/web --if-present
 ```
 
+## Clean projects
+
+```bash
+npm run clean
+```
+
 After exectution following URL will be available
 
 * Mongo Express [http://localhost:8081](http://localhost:8081)
