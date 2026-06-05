@@ -1,0 +1,19 @@
+services:
+  next:
+    build:
+      context: .
+      dockerfile: packages/apps/web/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: ${NEXT_PORT}
+      HOSTNAME: ${NEXT_HOST}
+    ports:
+      - 3000:3000
+    depends_on:
+      - mongo
+  mongo:
+    image: mongo
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
