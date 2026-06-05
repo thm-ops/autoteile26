@@ -1,53 +1,8 @@
 services:
-  app-dev:
-    image: ${DEV_IMAGE_NAME}
-    container_name: ${DEV_CONTAINER_NAME}
-
-    build:
-      context: .
-      dockerfile: packages/apps/web/Dockerfile.dev
-      args:
-        NODE_VERSION: ${NODE_VERSION}
-        APP_PORT: ${APP_PORT}
-
-    user: "${UID:-1000}:${GID:-1000}"
-
+  pgdata:
+    extends:
+      file: docker-compose.yml
+      service: pgdata
     ports:
-      - "${HOST_PORT_DEV}:${APP_PORT}"
-
-    environment:
-      NODE_ENV: ${NODE_ENV_DEV}
-      PORT: ${APP_PORT}
-      HOSTNAME: ${APP_HOSTNAME}
-      DATABASE_URL: ${DATABASE_URL}
-
-    volumes:
-      - ./:/app
-      - /app/node_modules
-
-    command: 
-      - npm
-      - run
-      - dev
-      - --workspace=@autoteile26/web
-      - --
-      - --hostname
-      - ${APP_HOSTNAME}
-      - --port
-      - ${APP_PORT}
-
-  db-dev:
-    image: postgres:${POSTGRES_VERSION}
-    container_name: ${DB_CONTAINER_NAME_DEV}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    ports:
-      - "${HOST_PORT_DB_DEV}:${POSTGRES_PORT}"
-    volumes:
-      - pgdata-dev:/var/lib/postgresql/data
-
-volumes:
-  pgdata-dev:
-    name: ${DB_VOLUME_DEV}
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    
