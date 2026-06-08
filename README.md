@@ -77,8 +77,19 @@ npm run dev
 or directly via Docker Compose:
 
 ```bash
-docker compose -f docker-compose.dev.yml up --build
+docker compose -f docker-compose.dev.yml up --build -d
+npm run build --workspace=@autoteile26/web --if-present
 ```
+
+## Clean projects
+
+```bash
+npm run clean
+```
+
+After exectution following URL will be available
+
+* Web [http://localhost:3000](http://localhost:3000)
 
 ---
 
