@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { formatPrice } from "@/app/utils/formatPrice"
 import { ProductView} from "@/app/domain/product";
+import PayPalInstantBuyButton from "@/app/components/paypal/InstantPayButtonPaypal"
 
 type ProductDetailsProps = {
     product : ProductView;
@@ -41,12 +42,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                         {formattedPrice}
                     </p>
 
-                    <button
-                        type="button"
-                        className="bg-blue-600 text-white p-3 rounded-2xl inline-block"
-                    >
-                        Sofort kaufen
-                    </button>
+                    <PayPalInstantBuyButton productId={product.id} />
                 </div>
             </section>
         </main>
