@@ -1,7 +1,6 @@
 "use client"
 
-import { PayPalButtons, PayPalScriptProvider, ReactPayPalScriptOptions  } from "@paypal/react-paypal-js";
-import {white} from "next/dist/lib/picocolors";
+import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 type InstantBuyButtonPaypalProps = {
     productId:string,
@@ -24,7 +23,6 @@ export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPa
                 }}
             >
                 <PayPalButtons
-                    disabled
                     style={{
                         layout: "horizontal",
                         color: "gold",
