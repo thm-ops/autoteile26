@@ -1,85 +1,9 @@
 services:
-  app-dev:
-    image: ${DEV_IMAGE_NAME}
-    container_name: ${DEV_CONTAINER_NAME}
-
-    build:
-      context: .
-      dockerfile: packages/apps/web/Dockerfile.dev
-      args:
-        NODE_VERSION: ${NODE_VERSION}
-        APP_PORT: ${APP_PORT}
-
-    user: "${UID:-1000}:${GID:-1000}"
-
+  postgres:
+    extends:
+      file: docker-compose.yml
+      service: postgres
     ports:
-      - "${HOST_PORT_DEV}:${APP_PORT}"
-
-    depends_on:
-      app-service-dev:
-        condition: service_healthy
-
-    environment:
-      NODE_ENV: ${NODE_ENV_DEV}
-      PORT: ${APP_PORT}
-      HOSTNAME: ${APP_HOSTNAME}
-      API_BASE_URL: ${API_BASE_URL_DEV}
-
-    volumes:
-      - ./:/app
-      - /app/node_modules
-      - /app/packages/apps/web/node_modules
-      - nextjs_cache:/app/packages/apps/web/.next
-
-    command: 
-      - npm
-      - run
-      - dev
-      - --workspace=@autoteile26/web
-      - --
-      - --hostname
-      - ${APP_HOSTNAME}
-      - --port
-      - ${APP_PORT}
-
-  app-service-dev:
-    build:
-      context: .
-      dockerfile: packages/apps/service/Dockerfile.dev
-      args:
-        NODE_VERSION: ${NODE_VERSION}
-    env_file:
-      - .env
-    environment:
-      NODE_ENV: ${NODE_ENV_DEV}
-    depends_on:
-      db-dev:
-        condition: service_healthy
-    ports:
-      # Map port 8080 on the host to port 3000 in the container, which is the default port for the service app
-      - "8080:3000"
-      # Debug port for Node.js, access: chrome://inspect > Open dedicated DevTools for Node > Add connection > localhost:9229 > Console
-      - "9229:9229"
-    volumes:
-      - ./packages/apps/service:/packages/apps/service
-      - app-service-dev-node-modules:/packages/apps/service/node_modules
-
-  db-dev:
-    image: postgres:${POSTGRES_VERSION}
-    container_name: ${DB_CONTAINER_NAME_DEV}
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost -p ${POSTGRES_PORT}"]
-    ports:
-      - "${HOST_PORT_DB_DEV}:${POSTGRES_PORT}"
-    volumes:
-      - pgdata-dev:/var/lib/postgresql/data
-
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
 volumes:
-  pgdata-dev:
-    name: ${DB_VOLUME_DEV}
-  app-service-dev-node-modules:
-  nextjs_cache:
+  pgdata:

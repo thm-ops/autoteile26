@@ -1,0 +1,36 @@
+services:
+  next:
+    build:
+      context: .
+      dockerfile: packages/apps/web/Dockerfile
+    restart: unless-stopped
+    environment:
+      PORT: ${NEXT_PORT}
+      HOSTNAME: ${NEXT_HOST}
+    ports:
+      - 3000:3000
+    depends_on:
+      - postgres
+      - service
+  service:
+    build:
+      context: .
+      dockerfile: packages/apps/service/Dockerfile
+    restart: unless-stopped
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    environment:
+      NODE_ENV: production
+  postgres:
+    image: postgres:18
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - pgdata:/var/lib/postgresql
+volumes:
+  pgdata:

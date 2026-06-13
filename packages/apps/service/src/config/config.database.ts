@@ -1,18 +1,11 @@
 export default () => {
-  const isProd = process.env.NODE_ENV === 'production';
   return {
     database: {
-      username: isProd
-        ? process.env.POSTGRES_USER_PROD
-        : process.env.POSTGRES_USER,
-      password: isProd
-        ? process.env.POSTGRES_PASSWORD_PROD
-        : process.env.POSTGRES_PASSWORD,
-      database: isProd ? process.env.POSTGRES_DB_PROD : process.env.POSTGRES_DB,
-      port: isProd
-        ? parseInt(process.env.POSTGRES_PORT_PROD ?? '5432', 10)
-        : parseInt(process.env.POSTGRES_PORT ?? '5432', 10),
-      host: isProd ? process.env.POSTGRES_HOST_PROD : process.env.POSTGRES_HOST,
+      username: process.env.POSTGRES_USER || 'autoteile26',
+      password: process.env.POSTGRES_PASSWORD || 'changeme_in_local_env',
+      database: process.env.POSTGRES_DB || 'autoteile26',
+      port: parseInt(process.env.POSTGRES_PORT ?? '5432', 10),
+      host: process.env.POSTGRES_HOST || '127.0.0.1'
     },
   };
 };

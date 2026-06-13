@@ -36,7 +36,7 @@ RUN npm run build
 # -----------------------------------------------------------------------------
 # Stage 3: Production runtime (Distroless)
 # -----------------------------------------------------------------------------
-FROM ${DISTROLESS_NODE_IMAGE} AS runner
+FROM node:${NODE_VERSION} AS runner
 
 LABEL maintainer="noelhoppe" \
     version="1.0" \
@@ -55,4 +55,4 @@ USER nonroot
 
 EXPOSE 3000
 
-CMD ["dist/main"]
+ENTRYPOINT [ "node", "dist/main.js" ]
