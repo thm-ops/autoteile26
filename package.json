@@ -9,7 +9,7 @@
     "packages/libs/*"
   ],
   "scripts": {
-    "dev": "docker compose -f docker-compose.dev.yml up -d && npm run dev:web",
+    "dev": "docker compose -f docker-compose.dev.yml up -d && concurrently -n \"next,service\" \"npm run dev:web\" \"npm run start:dev:service\"",
     "prod": "docker compose up --build",
     "start": "docker-compose up --build",
     "clean": "npm run clean --workspaces --if-present",
@@ -44,6 +44,7 @@
     "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service"
   },
   "devDependencies": {
+    "concurrently": "^10.0.3",
     "rimraf": "^6.1.3",
     "shx": "^0.4.0"
   }
