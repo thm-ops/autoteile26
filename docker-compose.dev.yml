@@ -5,3 +5,5 @@ services:
       service: postgres
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+volumes:
+  pgdata:
