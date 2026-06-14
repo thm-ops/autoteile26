@@ -24,11 +24,14 @@ Both development and production containers run internally on port `3000`.
 
 Different host ports are used to allow both environments to run in parallel without port conflicts:
 
-| Environment | Host Port | Container Port |
-|---|---|---|
-| Development | `3001` | `3000` |
-| Production | `3002` | `3000` |
-| Development (PostgreSQL) | `5433` | `5432` |
+| Environment                      | Host Port | Container Port |
+|----------------------------------|-----------|----------------|
+| Development (Next.js)            | `3001`    | `3000`         |
+| Production (Next.js)             | `3002`    | `3000`         |
+| Development (Nest.js)            | `8080`    | `3000`         |
+| Development (Nest.js) - Debugger | `9229`    | `9229`         |
+| Production (Nest.js)             | `8088`    | `3000`         |
+| Development (PostgreSQL)         | `5433`    | `5432`         |
 
 Examples:
 
@@ -86,7 +89,6 @@ npm run clean
 
 After exectution following URL will be available
 
-* Mongo Express [http://localhost:8081](http://localhost:8081)
 * Web [http://localhost:3000](http://localhost:3000)
 
 ---

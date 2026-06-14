@@ -1,0 +1,13 @@
+{
+  "name": "@autoteile26/helpers",
+  "version": "1.0.0",
+  "license": "MIT",
+  "exports": "./src/index.ts",
+
+  "devDependencies": {
+    "@autoteile26/lint-config": "*"
+  },
+  "scripts": {
+    "lint": "eslint ./src"
+  }
+}
