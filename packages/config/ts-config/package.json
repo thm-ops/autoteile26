@@ -1,0 +1,13 @@
+{
+  "name": "@autoteile26/ts-config",
+  "version": "1.0.0",
+  "license": "MIT",
+  "exports": {
+    ".": "./tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^20.19.40",
+    "typescript": "^5.9.3"
+  }
+}
