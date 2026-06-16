@@ -9,7 +9,7 @@
 - [Production](#production) 
 - [Docker Debugging & Diagnostics](#docker-debugging--diagnostics)
 - [Docker Compose Lifecycle Overview](#docker-compose-lifecycle-overview) 
-- [Paypal API] () 
+- [PayPal configuration](#paypal-configuration) 
 
 
 ---
@@ -296,13 +296,13 @@ CTRL + Q
 
 
 ---
-## PayPal configuration
+# PayPal configuration
 
 PayPal JavaScript SDK via `@paypal/react-paypal-js`
 
 ### Where to get the needed credentials:
 1. Log in to the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications/sandbox)
-2. Select **Sandbox** in the top left
+2. Select **Sandbox** in the top left (sandbox is used for testing)
 3. Click on **Apps & Credentials**
 4. Open **Default Application** or create new REST API app
 5. There you will see the API credentials. Copy them and paste them into `.env`.
