@@ -20,17 +20,23 @@ export default function CartEmptyState({
 }: CartEmptyStateProps) {
   const isDrawer = variant === "drawer";
 
+  const title = "Dein Warenkorb ist leer";
+  const description = "Derzeit hast du keine Artikel im Warenkorb. Besuche den Shop, um Artikel hinzuzufügen.";
+  const buttonText = "Zurück zum Shop";
+
   // Empty Cart UI for Drawer
   if (isDrawer) {
     return (
       <div className="h-full flex flex-col items-center justify-center text-slate-500 space-y-4">
         <ShoppingBag className="w-12 h-12 text-slate-300" />
-        <p>Leerer Warenkorb</p>
+        <p className="font-semibold text-slate-900">{title}</p>
+        <p className="text-sm text-center">{description}</p>
         <button
           onClick={onCloseDrawer}
-          className="text-blue-600 hover:text-blue-700 font-medium"
+          className="text-blue-600 hover:text-blue-700 font-medium inline-flex items-center gap-2 mt-2"
         >
-          Einkaufen
+          <ArrowLeft className="w-4 h-4" />
+          {buttonText}
         </button>
       </div>
     );
@@ -43,18 +49,17 @@ export default function CartEmptyState({
         <ShoppingBag className="w-12 h-12 text-slate-400" />
       </div>
       <h1 className="text-3xl font-bold text-slate-900 mb-4">
-        Dein Warenkorb ist leer
+        {title}
       </h1>
       <p className="text-slate-600 mb-8 max-w-md">
-        Derzeit hast du keine Artikel im Warenkorb. Besuche den Shop, um Artikel
-        hinzuzufügen.
+        {description}
       </p>
       <Link
         href="/"
         className="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2"
       >
         <ArrowLeft className="w-5 h-5" />
-        Zurück zum Shop
+        {buttonText}
       </Link>
     </div>
   );
