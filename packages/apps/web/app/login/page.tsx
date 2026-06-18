@@ -6,6 +6,14 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const validatePassword = (pw: string) => {
+    const hasMinLength = pw.length >= 12;
+    const hasLetter = /[a-zA-Z]/.test(pw);
+    const hasNumber = /[0-9]/.test(pw);
+
+    return hasMinLength && hasLetter && hasNumber;
+  };
+
   const handleLogin = (e: React.SubmitEvent) => {
     e.preventDefault();
     alert("Login noch ohne Backend");
