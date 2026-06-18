@@ -1,5 +1,11 @@
+# IDE Specific files
+.idea
+
 # Dependencies
 node_modules
+
+# Vitest coverage folder
+coverage
 
 # Credentials
 .env

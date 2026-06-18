@@ -1,8 +1,9 @@
 services:
-  pgdata:
+  postgres:
     extends:
       file: docker-compose.yml
-      service: pgdata
+      service: postgres
     ports:
       - "${POSTGRES_PORT}:${POSTGRES_PORT}"
-    
+volumes:
+  pgdata:
