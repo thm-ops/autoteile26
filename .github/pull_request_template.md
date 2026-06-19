@@ -32,7 +32,7 @@ _In case your PR includes visual changes, please include before and after screen
 - [ ] All jobs and checks have passed.
 - [ ] I have added the appropriate labels to this pull request, see here for instructions:
 [Managing labels](https://docs.github.com/en/issues/using-labels-and-milestones-to-track-work/managing-labels)
-- [ ] I have assigned at least two reviewers to this pull request, see here for instructions: 
+- [ ] I have assigned at least the minimum number of required reviewers to this pull request, see here for instructions: 
 [Requesting a pull request review](https://docs.github.com/de/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/requesting-a-pull-request-review)
 - [ ] Pull request title starts either with a verb in the present tense 
 - (e.g., _"Add: "_, _"Fix: "_, _"Update: "_) or with a prefix indicating the type of change (e.g., _"Feature: "_, _"Bugfix: "_, _"Hotfix: "_, _"Refactor: "_).
