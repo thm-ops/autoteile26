@@ -9,6 +9,8 @@
 - [Production](#production) 
 - [Docker Debugging & Diagnostics](#docker-debugging--diagnostics)
 - [Docker Compose Lifecycle Overview](#docker-compose-lifecycle-overview) 
+- [PayPal configuration](#paypal-configuration) 
+
 
 ---
 ## Requirements
@@ -293,3 +295,29 @@ Detach from an attached container session without stopping the container:
 CTRL + P
 CTRL + Q
 ```
+
+
+---
+# PayPal configuration
+
+PayPal JavaScript SDK via `@paypal/react-paypal-js`
+
+### Where to get the needed credentials:
+1. Log in to the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications/sandbox)
+2. Select **Sandbox** in the top left (sandbox is used for testing)
+3. Click on **Apps & Credentials**
+4. Open **Default Application** or create new REST API app
+5. There you will see the API credentials. Copy them and paste them into `.env`.
+
+
+| PayPal value  | '.env' value                   | Meaning                                                                                                                                     |
+|---------------|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| Client ID     | `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | Public Client ID used by the frontend to load PayPal JavaScript SKD and render PayPal Components (e.g. buttons)                             |
+| Client ID     | `PAYPAL_CLIENT_ID`             | Client ID used by the backend together with the secret (e.g. create PayPal order).                                                          |
+| Client Secret | `PAYPAL_CLIENT_SECRET`         | PayPal API secret. Only used in the backend. Do not expose this value in the frontend.                                                      |
+| REST API URL  | `PAYPAL_BASE_URL`              | PayPal REST API URL for backend requests. Use `https://api-m.sandbox.paypal.com` for testing and `https://api-m.paypal.com` for production. |
+
+
+
+
+---
