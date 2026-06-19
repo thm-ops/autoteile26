@@ -4,6 +4,6 @@ services:
       file: docker-compose.yml
       service: postgres
     ports:
-      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+      - "${POSTGRES_HOST_PORT}:${POSTGRES_PORT}"
 volumes:
   pgdata:
