@@ -2,18 +2,14 @@
 
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
-import { useEffect, useState } from "react";
 import { useCartStore, selectTotalItems } from "@/app/domain/cart/cart.store";
+import { useMounted } from "@/app/hooks/useMounted";
 
 export default function Header() {
   const toggleDrawer = useCartStore((state) => state.toggleDrawer);
   const totalItems = useCartStore(selectTotalItems);
   
-  // Prevent hydration mismatch
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   return (
     <header className="w-full bg-white border-b border-slate-200 shadow-sm sticky top-0 z-30">

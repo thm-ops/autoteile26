@@ -1,7 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useCartStore, selectTotalItems } from '@/app/domain/cart/cart.store';
+import { useMounted } from '@/app/hooks/useMounted';
 import CartItemList from '@/app/components/cart/CartItemList';
 import CartEmptyState from '@/app/components/cart/CartEmptyState';
 import CartSummary from '@/app/components/cart/CartSummary';
@@ -16,12 +16,9 @@ export default function CartPage() {
   
   const totalItems = useCartStore(selectTotalItems);
 
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    setLoading(false);
-  }, []);
+  const mounted = useMounted();
 
-  if (loading) {
+  if (!mounted) {
     return (
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32 flex flex-col items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-4 border-slate-200 border-t-blue-600 mb-4"></div>

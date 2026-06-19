@@ -1,8 +1,8 @@
 'use client';
 
 import { X, ShoppingBag } from 'lucide-react';
-import { useEffect, useState } from 'react';
 import { useCartStore, selectTotalItems } from '@/app/domain/cart/cart.store';
+import { useMounted } from '@/app/hooks/useMounted';
 import CartItemList from './CartItemList';
 import CartEmptyState from './CartEmptyState';
 import CartSummary from './CartSummary';
@@ -15,11 +15,7 @@ export default function CartDrawer() {
   
   const totalItems = useCartStore(selectTotalItems);
 
-  // Prevent hydration mismatch for persisted state
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMounted();
 
   if (!mounted) return null;
 
