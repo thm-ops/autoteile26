@@ -6,7 +6,7 @@ ARG DISTROLESS_NODE_IMAGE=gcr.io/distroless/nodejs24-debian12
 # -----------------------------------------------------------------------------
 FROM node:${NODE_VERSION} AS deps
 
-LABEL maintainer="noelhoppe" \
+LABEL maintainer="volknichtx" \
     version="1.0" \
     environment="production" \
     description="Production Docker image for the autoteil26 service application"
@@ -38,7 +38,7 @@ RUN npm run build
 # -----------------------------------------------------------------------------
 FROM node:${NODE_VERSION} AS runner
 
-LABEL maintainer="noelhoppe" \
+LABEL maintainer="volknichtx" \
     version="1.0" \
     environment="production" \
     description="Distroless production runtime for the autoteil26 service application"
@@ -51,7 +51,7 @@ COPY packages/apps/service/healthcheck.js .
 
 HEALTHCHECK CMD ["/nodejs/bin/node", "/packages/apps/service/healthcheck.js"]
 
-USER nonroot
+USER node
 
 EXPOSE 3000
 

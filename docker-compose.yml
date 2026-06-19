@@ -3,6 +3,9 @@ services:
     build:
       context: .
       dockerfile: packages/apps/web/Dockerfile
+      # Next.js embeds public variables while building the client bundle.
+      args:
+        NEXT_PUBLIC_PAYPAL_CLIENT_ID: ${NEXT_PUBLIC_PAYPAL_CLIENT_ID}
     restart: unless-stopped
     environment:
       PORT: ${NEXT_PORT}

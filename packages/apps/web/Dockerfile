@@ -12,6 +12,10 @@ COPY . .
 # Install dependencies using Docker cache mount
 RUN npm ci
 
+# Next.js inlines NEXT_PUBLIC_* values into the browser bundle at build time.
+ARG NEXT_PUBLIC_PAYPAL_CLIENT_ID
+ENV NEXT_PUBLIC_PAYPAL_CLIENT_ID=$NEXT_PUBLIC_PAYPAL_CLIENT_ID
+
 # Build standalone
 RUN npm run build
 
