@@ -1,5 +1,4 @@
 ARG NODE_VERSION=24-alpine
-ARG DISTROLESS_NODE_IMAGE=gcr.io/distroless/nodejs24-debian12
 
 # -----------------------------------------------------------------------------
 # Stage 1: Install dependencies
@@ -34,22 +33,23 @@ COPY packages/apps/service .
 RUN npm run build
 
 # -----------------------------------------------------------------------------
-# Stage 3: Production runtime (Distroless)
+# Stage 3: Production runtime
 # -----------------------------------------------------------------------------
 FROM node:${NODE_VERSION} AS runner
 
 LABEL maintainer="volknichtx" \
     version="1.0" \
     environment="production" \
-    description="Distroless production runtime for the autoteil26 service application"
+    description="Production runtime for the autoteil26 service application"
 
 WORKDIR /packages/apps/service
 
-COPY --from=builder /packages/apps/service/node_modules ./node_modules
-COPY --from=builder /packages/apps/service/dist ./dist
-COPY packages/apps/service/healthcheck.js .
+COPY --chown=node:node --from=builder /packages/apps/service/node_modules ./node_modules
+COPY --chown=node:node --from=builder /packages/apps/service/dist ./dist
+COPY --chown=node:node packages/apps/service/healthcheck.js .
 
-HEALTHCHECK CMD ["/nodejs/bin/node", "/packages/apps/service/healthcheck.js"]
+# The Alpine Node image provides `node` on PATH; /nodejs/bin/node is Distroless-only.
+HEALTHCHECK CMD ["node", "healthcheck.js"]
 
 USER node
 
