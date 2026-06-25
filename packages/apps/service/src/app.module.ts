@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configDatabase from './config/config.database';
@@ -12,6 +13,7 @@ import { User } from './user/user.entity';
   imports: [
     HealthModule,
     UserModule,
+    AuthModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -31,9 +33,11 @@ import { User } from './user/user.entity';
     }),
     ConfigModule.forRoot({
       load: [configDatabase],
+      isGlobal: true,
+      envFilePath: '../../../.env',
     }),
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

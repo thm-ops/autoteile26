@@ -1,8 +1,11 @@
 "use client";
 
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function LoginPage() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -14,13 +17,56 @@ export default function LoginPage() {
     return hasMinLength && hasLetter && hasNumber;
   };
 
-  const handleLogin = (e: React.SubmitEvent) => {
+  const handleLogin = async (e: React.SubmitEvent,) => {
     e.preventDefault();
-    alert("Login noch ohne Backend");
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    },
+    );
+
+    if (result?.error) {
+      alert("Login fehlgeschlagen");
+      return;
+    }
+
+    router.push("/");
   };
 
-  const handleRegister = () => {
-    alert("Register noch ohne Backend");
+  const handleRegister = async () => {
+    if (!validatePassword(password)) {
+      alert("Passwort muss mindestens 12 Zeichen haben und Zahlen + Buchstaben enthalten");
+      return;
+    }
+
+    const res = await fetch(`http://localhost:3001/auth/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    }
+    );
+
+    if (!res.ok) {
+      alert("Registrierung fehlgeschlagen");
+      return;
+    }
+
+    const result = await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      alert("Auto-Login fehlgeschlagen");
+      return;
+    }
+
+    router.push("/");
   };
 
   return (

@@ -1,7 +1,8 @@
 // app/layout.tsx
 import type { Metadata } from "next";
-import Header from "@/app/components/Header"; 
+import Header from "@/app/components/Header";
 import "./globals.css";
+import Providers from "./provider";
 
 export const metadata: Metadata = {
   title: "Autoteile26",
@@ -12,14 +13,14 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="de" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
-        
-        {/* Header*/}
-        <Header /> 
+        <Providers>
+          {/* Header*/}
+          <Header />
 
-        <main className="flex-1">
-          {children}
-        </main>
-
+          <main className="flex-1">
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );
