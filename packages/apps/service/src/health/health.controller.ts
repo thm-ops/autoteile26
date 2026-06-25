@@ -19,7 +19,8 @@ export class HealthController {
   @Get()
   @HealthCheck()
   check() {
-    const servicePort = this.configService.get('SERVICE_PORT') ?? 3000;
+    const servicePort =
+      this.configService.get<string>('SERVICE_PORT') ?? '3000';
 
     return this.health.check([
       () => this.http.pingCheck('backend', `http://localhost:${servicePort}`),
