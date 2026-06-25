@@ -1,7 +1,12 @@
 // https://www.mattknight.io/blog/docker-healthchecks-in-distroless-node-js
 const http = require('node:http');
 
-const options = { hostname: 'localhost', port: 3000, path: '/api/health', method: 'GET' };
+const options = {
+    hostname: 'localhost',
+    port: process.env.SERVICE_PORT || 3000,
+    path: '/api/health',
+    method: 'GET',
+};
 
 console.log(`Performing health check for ${options.method} ${options.hostname}:${options.port}${options.path}`)
 

@@ -5,6 +5,7 @@ import {
   HttpHealthIndicator,
   TypeOrmHealthIndicator,
 } from '@nestjs/terminus';
+import { ConfigService } from '@nestjs/config';
 
 @Controller('/api/health')
 export class HealthController {
@@ -12,13 +13,16 @@ export class HealthController {
     private health: HealthCheckService,
     private http: HttpHealthIndicator,
     private typeOrm: TypeOrmHealthIndicator,
+    private configService: ConfigService,
   ) {}
 
   @Get()
   @HealthCheck()
   check() {
+    const servicePort = this.configService.get('SERVICE_PORT') ?? 3000;
+
     return this.health.check([
-      () => this.http.pingCheck('backend', 'http://localhost:3000'),
+      () => this.http.pingCheck('backend', `http://localhost:${servicePort}`),
       () => this.typeOrm.pingCheck('database'),
     ]);
   }
