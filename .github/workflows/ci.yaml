@@ -1,0 +1,109 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+
+  build:
+    name: Builder
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build packages
+        run: npm run build
+
+  health:
+    name: Health-Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create CI env file
+        run: cp .env.default .env
+
+      - name: Build and start service
+        run: docker compose up -d --build service
+
+      - name: Wait for service health
+        run: |
+          container_id="$(docker compose ps -q service)"
+
+          for attempt in {1..30}; do
+            status="$(docker inspect --format='{{.State.Health.Status}}' "$container_id")"
+
+            if [ "$status" = "healthy" ]; then
+              exit 0
+            fi
+
+            if [ "$status" = "unhealthy" ]; then
+              docker inspect --format='{{json .State.Health}}' "$container_id"
+              docker compose logs service
+              exit 1
+            fi
+
+            sleep 2
+          done
+
+          docker inspect --format='{{json .State.Health}}' "$container_id"
+          docker compose logs service
+          exit 1
+
+      - name: Stop containers
+        if: always()
+        run: docker compose down --volumes
