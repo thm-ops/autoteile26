@@ -12,8 +12,7 @@ LABEL maintainer="volknichtx" \
 
 WORKDIR /packages/apps/service
 
-COPY package-lock.json .
-COPY packages/apps/service/package.json .
+COPY . .
 
 # https://docs.npmjs.com/cli/v11/commands/npm-ci
 RUN --mount=type=cache,target=/root/.npm \
