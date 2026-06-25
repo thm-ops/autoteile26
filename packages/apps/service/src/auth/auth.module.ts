@@ -12,7 +12,7 @@ import { AuthController } from './auth.controller';
             imports: [ConfigModule],
             inject: [ConfigService],
             useFactory: (config: ConfigService) => {
-                const secret = config.get('JWT_SECRET');
+                const secret = config.get<string>('JWT_SECRET');
 
                 if (!secret) {
                     throw new Error('JWT_SECRET is missing');
