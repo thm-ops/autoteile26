@@ -2,13 +2,16 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
+import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configDatabase from './config/config.database';
+import { User } from './user/user.entity';
 
 @Module({
   imports: [
     HealthModule,
+    UserModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -22,6 +25,7 @@ import configDatabase from './config/config.database';
           host: configService.get('database.host')!,
           synchronize: configService.get('NODE_ENV') === 'development',
           logging: true,
+          entities: [User],
         };
       },
     }),
