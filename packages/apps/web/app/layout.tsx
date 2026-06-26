@@ -1,6 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import Header from "./components/Header"; 
+import CartDrawer from "./components/cart/CartDrawer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,6 +21,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {children}
         </main>
 
+        {/* Drawer for the Shopping Cart */}
+        <CartDrawer />
       </body>
     </html>
   );

@@ -5,6 +5,7 @@ import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { resolve } from 'node:path';
 import configDatabase from './config/config.database';
 import { User } from './user/user.entity';
 
@@ -12,8 +13,16 @@ import { User } from './user/user.entity';
   imports: [
     HealthModule,
     UserModule,
+    // Prefer a service-local file; use the monorepo root file for local workspace runs.
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: [
+        resolve(process.cwd(), '.env'),
+        resolve(process.cwd(), '../../../.env'),
+      ],
+      load: [configDatabase],
+    }),
     TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
         return {
@@ -28,9 +37,6 @@ import { User } from './user/user.entity';
           entities: [User],
         };
       },
-    }),
-    ConfigModule.forRoot({
-      load: [configDatabase],
     }),
   ],
   controllers: [AppController],
