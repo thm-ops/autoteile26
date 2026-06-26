@@ -41,7 +41,9 @@ export default function LoginPage() {
       return;
     }
 
-    const res = await fetch(`http://localhost:3001/auth/register`, {
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    const res = await fetch(`${baseUrl}/auth/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

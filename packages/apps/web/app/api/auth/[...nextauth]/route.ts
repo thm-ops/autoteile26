@@ -12,7 +12,9 @@ const handler = NextAuth({
             },
 
             async authorize(credentials) {
-                const res = await fetch("http://localhost:3001/auth/login", {
+                const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+                const res = await fetch(`${baseUrl}/auth/login`, {
                     method: "POST",
                     body: JSON.stringify({
                         email: credentials?.email,

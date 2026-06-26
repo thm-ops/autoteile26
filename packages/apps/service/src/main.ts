@@ -3,9 +3,10 @@ import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const baseUrl = process.env.NEXT_PUBLIC_URL;
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: '${baseUrl}',
     credentials: true,
   });
 
