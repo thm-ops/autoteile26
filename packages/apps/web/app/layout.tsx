@@ -1,6 +1,7 @@
 // app/layout.tsx
 import type { Metadata } from "next";
 import Header from "@/app/components/Header";
+import CartDrawer from "./components/cart/CartDrawer";
 import "./globals.css";
 import Providers from "./provider";
 
@@ -20,6 +21,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <main className="flex-1">
             {children}
           </main>
+          {/* Drawer for the Shopping Cart */}
+          <CartDrawer />
         </Providers>
       </body>
     </html>
