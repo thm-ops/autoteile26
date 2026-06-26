@@ -1,8 +1,6 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-'use client';
-
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 import { useCartStore, selectTotalItems } from "@/app/domain/cart/cart.store";
