@@ -6,7 +6,7 @@ async function bootstrap() {
   const baseUrl = process.env.NEXT_PUBLIC_URL;
 
   app.enableCors({
-    origin: '${baseUrl}',
+    origin: baseUrl,
     credentials: true,
   });
 
