@@ -34,7 +34,7 @@ import { User } from './user/user.entity';
           database: configService.get('database.database') ?? 'postgres',
           port: configService.get('database.port') ?? 5432,
           host: configService.get('database.host')!,
-          synchronize: configService.get('NODE_ENV') === 'development',
+          synchronize: false,
           logging: true,
           entities: [User],
         };
@@ -44,4 +44,4 @@ import { User } from './user/user.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}
