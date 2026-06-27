@@ -41,7 +41,10 @@
     "test:watch:service": "npm run test:watch --workspace=@autoteile26/service",
     "test:cov:service": "npm run test:cov --workspace=@autoteile26/service",
     "test:debug:service": "npm run test:debug --workspace=@autoteile26/service",
-    "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service"
+    "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service",
+    "migration:run:service": "npm run migration:run --workspace=@autoteile26/service",
+    "migration:revert:service": "npm run migration:revert --workspace=@autoteile26/service",
+    "migration:show:service": "npm run migration:show --workspace=@autoteile26/service"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
