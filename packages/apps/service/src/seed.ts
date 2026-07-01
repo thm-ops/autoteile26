@@ -1,7 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { UserService } from './user/user.service';
-
+/**
+ * Seeds the database with an initial admin user.
+ * Reads ADMIN_EMAIL and ADMIN_PASSWORD from environment variables.
+ * If the admin user already exists, no action is taken.
+ * @returns Promise<void>
+ */
 async function seed() {
   const app = await NestFactory.createApplicationContext(AppModule);
   const userService = app.get(UserService);
