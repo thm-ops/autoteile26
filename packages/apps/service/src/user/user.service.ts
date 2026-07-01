@@ -11,9 +11,12 @@ export class UserService {
     private readonly userRepository: Repository<User>,
   ) {}
 
-  /**
-   * Creates a new user with a hashed password.
-   */
+ /**
+ * Creates a new user with a hashed password.
+ * @param email - The email address of the user.
+ * @param password - The plain text password to be hashed.
+ * @returns The created User entity.
+ */
   async createUser(email: string, password: string): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.userRepository.create({ email, password: hashedPassword });
@@ -21,8 +24,11 @@ export class UserService {
   }
 
   /**
-   * Validates a user by email and password.
-   */
+ * Validates a user by email and password.
+ * @param email - The email address of the user.
+ * @param password - The plain text password to validate.
+ * @returns The User entity if credentials are valid, or null if the user is not found or the password is incorrect.
+ */
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) return null;
@@ -31,8 +37,12 @@ export class UserService {
   }
 
   /**
-   * Updates the password of a user.
-   */
+ * Updates the password of an existing user.
+ * @param email - The email address of the user.
+ * @param newPassword - The new plain text password to be hashed and saved.
+ * @throws NotFoundException if the user is not found.
+ * @returns void
+ */
   async updatePassword(email: string, newPassword: string): Promise<void> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) throw new NotFoundException('User not found');
@@ -41,8 +51,11 @@ export class UserService {
   }
 
   /**
-   * Deletes a user by email.
-   */
+ * Deletes a user by email.
+ * @param email - The email address of the user to delete.
+ * @throws NotFoundException if the user is not found.
+ * @returns void
+ */
   async deleteUser(email: string): Promise<void> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) throw new NotFoundException('User not found');
