@@ -2,10 +2,13 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
+import { UserModule } from './user/user.module';
+import { AuthModule } from './auth/auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolve } from 'node:path';
 import configDatabase from './config/config.database';
+import { User } from './user/user.entity';
 
 @Module({
   imports: [
@@ -19,6 +22,8 @@ import configDatabase from './config/config.database';
       ],
       load: [configDatabase],
     }),
+    UserModule,
+    AuthModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -29,8 +34,9 @@ import configDatabase from './config/config.database';
           database: configService.get('database.database') ?? 'postgres',
           port: configService.get('database.port') ?? 5432,
           host: configService.get('database.host')!,
-          synchronize: configService.get('NODE_ENV') === 'development',
+          synchronize: false,
           logging: true,
+          entities: [User],
         };
       },
     }),
@@ -38,4 +44,4 @@ import configDatabase from './config/config.database';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }
