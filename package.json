@@ -41,7 +41,11 @@
     "test:watch:service": "npm run test:watch --workspace=@autoteile26/service",
     "test:cov:service": "npm run test:cov --workspace=@autoteile26/service",
     "test:debug:service": "npm run test:debug --workspace=@autoteile26/service",
-    "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service"
+    "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service",
+    "test:e2e": "npm run test --workspace=@autoteile26/e2e-tests",
+    "test:e2e:ui": "npm run test:ui --workspace=@autoteile26/e2e-tests",
+    "test:e2e:headed": "npm run test:headed --workspace=@autoteile26/e2e-tests",
+    "build:web-and-service": "npm run build:service && npm run build:web"
   },
   "devDependencies": {
     "concurrently": "^10.0.3",
