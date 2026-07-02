@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import CartDrawer from "./components/cart/CartDrawer";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -21,9 +22,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {children}
         </main>
 
+        {/* Drawer for the Shopping Cart */}
+        <CartDrawer />
+        
         {/* Footer*/}
         <Footer />
-
       </body>
     </html>
   );
