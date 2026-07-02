@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -6,6 +6,10 @@ import { User } from './user.entity';
 
 @Injectable()
 export class UserService {
+
+    private readonly maxFailedLoginAttempts = 10; // 10 Attempts
+    private readonly lockoutDurationMs = 30 * 60 * 1000; // 30 Minutes
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -32,7 +36,41 @@ export class UserService {
   async validateUser(email: string, password: string): Promise<User | null> {
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) return null;
+
+
+    if (user.lockedUntil) {
+
+      const lockedUntilTime = new Date(user.lockedUntil).getTime();
+
+      if (lockedUntilTime > Date.now()) {
+
+        throw new UnauthorizedException('Account is temporarily locked');
+      }
+    
+      user.failedLoginAttempts = 0;
+      user.lockedUntil = null;
+    }
+    
+
     const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+
+      user.failedLoginAttempts = (user.failedLoginAttempts ?? 0) + 1;
+
+      if (user.failedLoginAttempts >= this.maxFailedLoginAttempts) {
+        user.lockedUntil = new Date(Date.now() + this.lockoutDurationMs);
+      }
+    }
+
+    else {
+
+      user.lockedUntil = null;
+      user.failedLoginAttempts = 0;
+
+    }
+    await this.userRepository.save(user);
+
     return isValid ? user : null;
   }
 
@@ -61,4 +99,24 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found');
     await this.userRepository.remove(user);
   }
+
+
+  async unlockUser(email: string): Promise<User> {
+
+    const user = await this.userRepository.findOne({ where: { email } });
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    user.failedLoginAttempts = 0;
+    user.lockedUntil = null;
+
+    return this.userRepository.save(user);
+  }
+
+  async findById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id } });
+  }
+
 }

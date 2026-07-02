@@ -3,6 +3,8 @@ import {
     Post,
     Body,
     UnauthorizedException,
+    ForbiddenException,
+    Headers,
 } from '@nestjs/common';
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
@@ -22,6 +24,8 @@ export class AuthController {
         },
     ) {
         const user = await this.userService.validateUser(body.email, body.password,);
+
+
 
         if (!user) {
             throw new UnauthorizedException('Invalid credentials');
@@ -55,5 +59,33 @@ export class AuthController {
             id: user.id,
             email: user.email,
         };
+    }
+
+    @Post('unlock')
+    async unlock(
+        @Headers('authorization') authorization: string,
+        @Body() body: { email: string },
+    ) {
+        if (!authorization || !authorization.startsWith('Bearer ')) {
+            throw new UnauthorizedException('Missing token');
+        }
+
+        const token = authorization.replace('Bearer ', '');
+
+        let payload: { sub: string; email: string };
+
+        try {
+            payload = await this.jwtService.verifyAsync(token);
+        } catch {
+            throw new UnauthorizedException('Invalid token');
+        }
+
+        const adminUser = await this.userService.findById(payload.sub);
+
+        if (!adminUser || adminUser.role !== 'admin') {
+            throw new ForbiddenException('Only admins can unlock accounts');
+        }
+
+        return this.userService.unlockUser(body.email);
     }
 }
