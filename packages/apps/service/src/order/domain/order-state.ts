@@ -5,7 +5,7 @@ export enum OrderState {
   Created = 'CREATED',
   /** Payment was confirmed. */
   Confirmed = 'CONFIRMED',
-  /** Order is currency being shipped.*/
+  /** Order is currently being shipped.*/
   InShipment = 'IN_SHIPMENT',
   /** Order was delivered. */
   Delivered = 'DELIVERED',
