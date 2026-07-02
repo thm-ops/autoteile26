@@ -9,10 +9,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolve } from 'node:path';
 import configDatabase from './config/config.database';
 import { User } from './user/user.entity';
+import { OrderModule } from './order/order.module';
+import { Order } from './order/order.entity';
 
 @Module({
   imports: [
     HealthModule,
+    OrderModule,
     // Prefer a service-local file; use the monorepo root file for local workspace runs.
     ConfigModule.forRoot({
       isGlobal: true,
@@ -36,7 +39,7 @@ import { User } from './user/user.entity';
           host: configService.get('database.host')!,
           synchronize: false,
           logging: true,
-          entities: [User],
+          entities: [User, Order],
         };
       },
     }),
