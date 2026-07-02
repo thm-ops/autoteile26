@@ -11,7 +11,7 @@ export default function Impressum() {
     <section className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <h1 className="text-3xl font-bold text-slate-900 mb-8">Impressum</h1>
 
-      {/* Angaben gemäß § 5 DDG */}
+      {/* Provider information (§ 5 DDG) */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-slate-900 mb-2">Angaben gemäß § 5 DDG</h2>
         <p className="text-slate-700 leading-relaxed">
@@ -22,7 +22,7 @@ export default function Impressum() {
         </p>
       </div>
 
-      {/* Vertretung */}
+      {/* Authorised representatives */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-slate-900 mb-2">Vertreten durch</h2>
         <p className="text-slate-700 leading-relaxed">
@@ -31,7 +31,7 @@ export default function Impressum() {
         </p>
       </div>
 
-      {/* Kontakt */}
+      {/* Contact */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-slate-900 mb-2">Kontakt</h2>
         <p className="text-slate-700 leading-relaxed">
@@ -44,7 +44,7 @@ export default function Impressum() {
         </p>
       </div>
 
-      {/* Registereintrag */}
+      {/* Commercial register entry */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-slate-900 mb-2">Registereintrag</h2>
         <p className="text-slate-700 leading-relaxed">
@@ -54,7 +54,7 @@ export default function Impressum() {
         </p>
       </div>
 
-      {/* Umsatzsteuer */}
+      {/* VAT ID */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-slate-900 mb-2">Umsatzsteuer-ID</h2>
         <p className="text-slate-700 leading-relaxed">
@@ -63,7 +63,7 @@ export default function Impressum() {
         </p>
       </div>
 
-      {/* Verantwortlicher für den Inhalt */}
+      {/* Person responsible for content (§ 18 Abs. 2 MStV) */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-slate-900 mb-2">
           Redaktionell verantwortlich gemäß § 18 Abs. 2 MStV
@@ -75,7 +75,7 @@ export default function Impressum() {
         </p>
       </div>
 
-      {/* EU-Streitschlichtung */}
+      {/* EU online dispute resolution */}
       <div className="mb-8">
         <h2 className="text-lg font-semibold text-slate-900 mb-2">EU-Streitschlichtung</h2>
         <p className="text-slate-700 leading-relaxed">
@@ -92,7 +92,7 @@ export default function Impressum() {
         </p>
       </div>
 
-      {/* Verbraucherstreitbeilegung */}
+      {/* Consumer dispute resolution */}
       <div>
         <h2 className="text-lg font-semibold text-slate-900 mb-2">
           Verbraucherstreitbeilegung / Universalschlichtungsstelle

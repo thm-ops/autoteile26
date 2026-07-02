@@ -11,7 +11,7 @@ export default function Footer() {
           © {year} MeinShop Autoteile GmbH
         </p>
 
-        {/* Rechtliche Links */}
+        {/* Legal links */}
         <nav className="flex items-center gap-6">
           <Link href="/impressum" className="text-sm text-slate-600 hover:text-slate-900 transition-colors">
             Impressum
