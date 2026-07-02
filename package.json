@@ -45,7 +45,7 @@
     "migration:run:service": "npm run migration:run --workspace=@autoteile26/service",
     "migration:revert:service": "npm run migration:revert --workspace=@autoteile26/service",
     "migration:show:service": "npm run migration:show --workspace=@autoteile26/service",
-    "copy_env_web": "cp .env packages/apps/web/.env"
+    "copy_env_web": "cp .env.default packages/apps/web/.env"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
