@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
@@ -23,10 +27,19 @@ const ALLOWED_ORDER_TRANSITIONS: Record<OrderState, OrderState[]> = {
  * Allowed payment state transitions.
  */
 const ALLOWED_PAYMENT_TRANSITIONS: Record<PaymentState, PaymentState[]> = {
-  [PaymentState.Created]: [PaymentState.PayerActionRequired, PaymentState.Failed],
-  [PaymentState.PayerActionRequired]: [PaymentState.Authorized, PaymentState.Failed],
+  [PaymentState.Created]: [
+    PaymentState.PayerActionRequired,
+    PaymentState.Failed,
+  ],
+  [PaymentState.PayerActionRequired]: [
+    PaymentState.Authorized,
+    PaymentState.Failed,
+  ],
   [PaymentState.Authorized]: [PaymentState.Captured, PaymentState.Failed],
-  [PaymentState.Captured]: [PaymentState.Refunded, PaymentState.PartiallyRefunded],
+  [PaymentState.Captured]: [
+    PaymentState.Refunded,
+    PaymentState.PartiallyRefunded,
+  ],
   [PaymentState.Refunded]: [],
   [PaymentState.PartiallyRefunded]: [PaymentState.Refunded],
   [PaymentState.Failed]: [],
@@ -48,7 +61,9 @@ export class OrderService {
     const clientId = this.configService.get<string>('PAYPAL_CLIENT_ID');
     const clientSecret = this.configService.get<string>('PAYPAL_CLIENT_SECRET');
     const baseUrl = this.configService.get<string>('PAYPAL_BASE_URL');
-    const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+    const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString(
+      'base64',
+    );
 
     const response = await axios.post(
       `${baseUrl}/v1/oauth2/token`,
@@ -68,7 +83,10 @@ export class OrderService {
    * @param cart - The cart object containing items and totalPrice.
    * @returns The created Order entity with paypalOrderId and paypalLink.
    */
-  async createOrder(cart: { items: object; totalPrice: string }): Promise<{ order: Order; paypalLink: string | undefined }> {
+  async createOrder(cart: {
+    items: object;
+    totalPrice: string;
+  }): Promise<{ order: Order; paypalLink: string | undefined }> {
     const accessToken = await this.getPaypalAccessToken();
     const baseUrl = this.configService.get<string>('PAYPAL_BASE_URL');
 
@@ -121,6 +139,11 @@ export class OrderService {
    */
   async captureOrder(id: string): Promise<Order> {
     const order = await this.getOrder(id);
+
+    if (order.paymentState !== PaymentState.PayerActionRequired) {
+      throw new BadRequestException('Order is not ready for payment capture.');
+    }
+
     const accessToken = await this.getPaypalAccessToken();
     const baseUrl = this.configService.get<string>('PAYPAL_BASE_URL');
 
@@ -135,7 +158,8 @@ export class OrderService {
       },
     );
 
-    order.paypalCaptureId = response.data.purchase_units[0].payments.captures[0].id;
+    order.paypalCaptureId =
+      response.data.purchase_units[0].payments.captures[0].id;
     order.paymentState = PaymentState.Captured;
     order.orderState = OrderState.Confirmed;
     return this.orderRepository.save(order);
@@ -148,7 +172,9 @@ export class OrderService {
    */
   async getOrders(filter?: { orderState?: OrderState }): Promise<Order[]> {
     if (filter?.orderState) {
-      return this.orderRepository.find({ where: { orderState: filter.orderState } });
+      return this.orderRepository.find({
+        where: { orderState: filter.orderState },
+      });
     }
     return this.orderRepository.find();
   }
@@ -196,6 +222,14 @@ export class OrderService {
    */
   async refundOrder(id: string, message: string): Promise<Order> {
     const order = await this.getOrder(id);
+
+    if (
+      !order.paypalCaptureId ||
+      order.paymentState !== PaymentState.Captured
+    ) {
+      throw new BadRequestException('Only captured payments can be refunded.');
+    }
+
     const accessToken = await this.getPaypalAccessToken();
     const baseUrl = this.configService.get<string>('PAYPAL_BASE_URL');
 
@@ -224,10 +258,20 @@ export class OrderService {
    */
   async voidOrder(id: string, message: string): Promise<Order> {
     const order = await this.getOrder(id);
+
+    const allowedOrderTransitions = ALLOWED_ORDER_TRANSITIONS[order.orderState];
+
+    if (!allowedOrderTransitions.includes(OrderState.Cancelled)) {
+      throw new BadRequestException(
+        `Order in state ${order.orderState} cannot be cancelled`,
+      );
+    }
+
     order.comment = message;
     order.paymentState = PaymentState.Failed;
-    await this.orderRepository.save(order);
-    return this.orderTransition(id, OrderState.Cancelled);
+    order.orderState = OrderState.Cancelled;
+
+    return this.orderRepository.save(order);
   }
 
   /**
