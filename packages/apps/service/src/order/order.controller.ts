@@ -7,7 +7,7 @@ import {
   Query,
 } from '@nestjs/common';
 import { OrderService } from './order.service';
-import { OrderStatus } from './order.entity';
+import { OrderState } from './order.entity';
 
 @Controller('orders')
 export class OrderController {
@@ -16,7 +16,7 @@ export class OrderController {
   /**
    * Creates a new order with a PayPal payment link.
    * @param body - The cart object containing items and totalPrice.
-   * @returns The created Order entity.
+   * @returns The created Order entity with paypalLink.
    */
   @Post()
   async createOrder(@Body() body: { items: object; totalPrice: string }) {
@@ -34,13 +34,13 @@ export class OrderController {
   }
 
   /**
-   * Returns all orders, optionally filtered by status.
-   * @param status - Optional status filter.
+   * Returns all orders, optionally filtered by order state.
+   * @param orderState - Optional order state filter.
    * @returns Array of Order entities.
    */
   @Get()
-  async getOrders(@Query('status') status?: OrderStatus) {
-    return this.orderService.getOrders(status ? { status } : undefined);
+  async getOrders(@Query('orderState') orderState?: OrderState) {
+    return this.orderService.getOrders(orderState ? { orderState } : undefined);
   }
 
   /**
@@ -54,17 +54,17 @@ export class OrderController {
   }
 
   /**
-   * Transitions an order to a new status.
+   * Transitions an order to a new order state.
    * @param id - The UUID of the order.
-   * @param body - The new status.
+   * @param body - The new order state.
    * @returns The updated Order entity.
    */
   @Post(':id/transition')
   async orderTransition(
     @Param('id') id: string,
-    @Body() body: { status: OrderStatus },
+    @Body() body: { orderState: OrderState },
   ) {
-    return this.orderService.orderTransition(id, body.status);
+    return this.orderService.orderTransition(id, body.orderState);
   }
 
   /**

@@ -3,21 +3,33 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import axios from 'axios';
-import { Order, OrderStatus } from './order.entity';
+import { Order, OrderState, PaymentState } from './order.entity';
 
 /**
  * Allowed order state transitions based on the Order-States Wiki.
  */
-const ALLOWED_TRANSITIONS: Record<OrderStatus, OrderStatus[]> = {
-  [OrderStatus.ORDER_PLACED]: [OrderStatus.ORDER_SUCCESSFUL, OrderStatus.ORDER_CANCELLED],
-  [OrderStatus.ORDER_SUCCESSFUL]: [OrderStatus.IN_PREPARATION],
-  [OrderStatus.IN_PREPARATION]: [OrderStatus.ORDER_SHIPPED, OrderStatus.ORDER_CANCELLED],
-  [OrderStatus.ORDER_SHIPPED]: [OrderStatus.IN_TRANSIT],
-  [OrderStatus.IN_TRANSIT]: [OrderStatus.ORDER_DELIVERED],
-  [OrderStatus.ORDER_DELIVERED]: [OrderStatus.AWAIT_RETURN],
-  [OrderStatus.AWAIT_RETURN]: [OrderStatus.RETURNED],
-  [OrderStatus.ORDER_CANCELLED]: [],
-  [OrderStatus.RETURNED]: [],
+const ALLOWED_ORDER_TRANSITIONS: Record<OrderState, OrderState[]> = {
+  [OrderState.Created]: [OrderState.Confirmed, OrderState.Cancelled],
+  [OrderState.Confirmed]: [OrderState.InShipment, OrderState.Cancelled],
+  [OrderState.InShipment]: [OrderState.Delivered, OrderState.Cancelled],
+  [OrderState.Delivered]: [OrderState.ReturnRequested, OrderState.Closed],
+  [OrderState.ReturnRequested]: [OrderState.Returned, OrderState.Closed],
+  [OrderState.Returned]: [OrderState.Closed],
+  [OrderState.Cancelled]: [],
+  [OrderState.Closed]: [],
+};
+
+/**
+ * Allowed payment state transitions.
+ */
+const ALLOWED_PAYMENT_TRANSITIONS: Record<PaymentState, PaymentState[]> = {
+  [PaymentState.Created]: [PaymentState.PayerActionRequired, PaymentState.Failed],
+  [PaymentState.PayerActionRequired]: [PaymentState.Authorized, PaymentState.Failed],
+  [PaymentState.Authorized]: [PaymentState.Captured, PaymentState.Failed],
+  [PaymentState.Captured]: [PaymentState.Refunded, PaymentState.PartiallyRefunded],
+  [PaymentState.Refunded]: [],
+  [PaymentState.PartiallyRefunded]: [PaymentState.Refunded],
+  [PaymentState.Failed]: [],
 };
 
 @Injectable()
@@ -54,7 +66,7 @@ export class OrderService {
   /**
    * Creates a new order and a PayPal payment link.
    * @param cart - The cart object containing items and totalPrice.
-   * @returns The created Order entity with paypalOrderId.
+   * @returns The created Order entity with paypalOrderId and paypalLink.
    */
   async createOrder(cart: { items: object; totalPrice: string }): Promise<{ order: Order; paypalLink: string | undefined }> {
     const accessToken = await this.getPaypalAccessToken();
@@ -81,27 +93,28 @@ export class OrderService {
       },
     );
 
-const order = this.orderRepository.create({
-  items: cart.items,
-  totalPrice: cart.totalPrice,
-  paypalOrderId: paypalResponse.data.id,
-  status: OrderStatus.ORDER_PLACED,
-});
+    const order = this.orderRepository.create({
+      items: cart.items,
+      totalPrice: cart.totalPrice,
+      paypalOrderId: paypalResponse.data.id,
+      orderState: OrderState.Created,
+      paymentState: PaymentState.PayerActionRequired,
+    });
 
-const savedOrder = await this.orderRepository.save(order);
+    const savedOrder = await this.orderRepository.save(order);
 
-const paypalLink = paypalResponse.data.links.find(
-  (link: any) => link.rel === 'payer-action',
-)?.href;
+    const paypalLink = paypalResponse.data.links.find(
+      (link: any) => link.rel === 'payer-action',
+    )?.href;
 
-return {
-  order: savedOrder,
-  paypalLink,
-};
+    return {
+      order: savedOrder,
+      paypalLink,
+    };
   }
 
   /**
-   * Captures a PayPal payment and updates order status.
+   * Captures a PayPal payment and updates order and payment states.
    * @param id - The UUID of the order.
    * @returns The updated Order entity.
    * @throws NotFoundException if the order is not found.
@@ -123,19 +136,19 @@ return {
     );
 
     order.paypalCaptureId = response.data.purchase_units[0].payments.captures[0].id;
-    await this.orderRepository.save(order);
-
-    return this.orderTransition(id, OrderStatus.ORDER_SUCCESSFUL);
+    order.paymentState = PaymentState.Captured;
+    order.orderState = OrderState.Confirmed;
+    return this.orderRepository.save(order);
   }
 
   /**
-   * Returns all orders, optionally filtered by status.
-   * @param filter - Optional filter object with status field.
+   * Returns all orders, optionally filtered by order state.
+   * @param filter - Optional filter object with orderState field.
    * @returns Array of Order entities.
    */
-  async getOrders(filter?: { status?: OrderStatus }): Promise<Order[]> {
-    if (filter?.status) {
-      return this.orderRepository.find({ where: { status: filter.status } });
+  async getOrders(filter?: { orderState?: OrderState }): Promise<Order[]> {
+    if (filter?.orderState) {
+      return this.orderRepository.find({ where: { orderState: filter.orderState } });
     }
     return this.orderRepository.find();
   }
@@ -153,24 +166,24 @@ return {
   }
 
   /**
-   * Transitions an order to a new status.
+   * Transitions an order to a new order state.
    * @param id - The UUID of the order.
-   * @param newStatus - The new status to transition to.
+   * @param newOrderState - The new order state to transition to.
    * @returns The updated Order entity.
    * @throws NotFoundException if the order is not found.
    * @throws BadRequestException if the transition is not allowed.
    */
-  async orderTransition(id: string, newStatus: OrderStatus): Promise<Order> {
+  async orderTransition(id: string, newOrderState: OrderState): Promise<Order> {
     const order = await this.getOrder(id);
-    const allowed = ALLOWED_TRANSITIONS[order.status];
+    const allowed = ALLOWED_ORDER_TRANSITIONS[order.orderState];
 
-    if (!allowed.includes(newStatus)) {
+    if (!allowed.includes(newOrderState)) {
       throw new BadRequestException(
-        `Transition from ${order.status} to ${newStatus} is not allowed.`,
+        `Transition from ${order.orderState} to ${newOrderState} is not allowed.`,
       );
     }
 
-    order.status = newStatus;
+    order.orderState = newOrderState;
     return this.orderRepository.save(order);
   }
 
@@ -197,7 +210,9 @@ return {
       },
     );
 
-    return this.orderTransition(id, OrderStatus.RETURNED);
+    order.paymentState = PaymentState.Refunded;
+    order.orderState = OrderState.Returned;
+    return this.orderRepository.save(order);
   }
 
   /**
@@ -210,8 +225,9 @@ return {
   async voidOrder(id: string, message: string): Promise<Order> {
     const order = await this.getOrder(id);
     order.comment = message;
+    order.paymentState = PaymentState.Failed;
     await this.orderRepository.save(order);
-    return this.orderTransition(id, OrderStatus.ORDER_CANCELLED);
+    return this.orderTransition(id, OrderState.Cancelled);
   }
 
   /**

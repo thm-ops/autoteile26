@@ -5,26 +5,21 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { OrderState } from './domain/order-state';
+import { PaymentState } from './domain/payment-state';
 
-export enum OrderStatus {
-  ORDER_PLACED = 'order_placed',
-  ORDER_SUCCESSFUL = 'order_successful',
-  IN_PREPARATION = 'in_preparation',
-  ORDER_SHIPPED = 'order_shipped',
-  IN_TRANSIT = 'in_transit',
-  ORDER_DELIVERED = 'order_delivered',
-  ORDER_CANCELLED = 'order_cancelled',
-  AWAIT_RETURN = 'await_return',
-  RETURNED = 'returned',
-}
+export { OrderState, PaymentState };
 
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'enum', enum: OrderStatus, default: OrderStatus.ORDER_PLACED })
-  status!: OrderStatus;
+  @Column({ type: 'enum', enum: OrderState, default: OrderState.Created })
+  orderState!: OrderState;
+
+  @Column({ type: 'enum', enum: PaymentState, default: PaymentState.Created })
+  paymentState!: PaymentState;
 
   @Column({ type: 'jsonb' })
   items!: object;
