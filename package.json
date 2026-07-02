@@ -9,7 +9,7 @@
     "packages/libs/*"
   ],
   "scripts": {
-    "dev": "docker compose -f docker-compose.dev.yml up -d && concurrently -n \"next,service\" \"npm run dev:web\" \"npm run start:dev:service\"",
+    "dev": "npm run copy_env_web && docker compose -f docker-compose.dev.yml up -d && concurrently -n \"next,service\" \"npm run dev:web\" \"npm run start:dev:service\"",
     "prod": "docker compose up --build",
     "start": "docker-compose up --build",
     "clean": "npm run clean --workspaces --if-present",
@@ -21,10 +21,10 @@
     "down": "npm run down:dev && npm run down:prod",
     "down:dev": "docker compose -f docker-compose.dev.yml down",
     "down:prod": "docker compose -f docker-compose.yml down",
-    "build": "npm run build --workspaces --if-present",
-    "build:web": "npm run build --workspace=@autoteile26/web",
-    "start:web": "npm run start --workspace=@autoteile26/web",
-    "dev:web": "npm run dev --workspace=@autoteile26/web",
+    "build": "npm run copy_env_web && npm run build --workspaces --if-present",
+    "build:web": "npm run copy_env_web && npm run build --workspace=@autoteile26/web",
+    "start:web": "npm run copy_env_web && npm run start --workspace=@autoteile26/web",
+    "dev:web": "npm run copy_env_web && npm run dev --workspace=@autoteile26/web",
     "test": "npm run test --workspaces --if-present",
     "test:web": "npm run test --workspace=@autoteile26/web",
     "lint": "npm run lint --workspaces --if-present",
@@ -44,7 +44,8 @@
     "test:e2e:service": "npm run test:e2e --workspace=@autoteile26/service",
     "migration:run:service": "npm run migration:run --workspace=@autoteile26/service",
     "migration:revert:service": "npm run migration:revert --workspace=@autoteile26/service",
-    "migration:show:service": "npm run migration:show --workspace=@autoteile26/service"
+    "migration:show:service": "npm run migration:show --workspace=@autoteile26/service",
+    "copy_env_web": "cp .env packages/apps/web/.env"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
