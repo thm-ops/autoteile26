@@ -19,15 +19,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {/* Header*/}
           <Header />
 
-        <main className="flex-1">
-          {children}
-        </main>
+          <main className="flex-1">
+            {children}
+          </main>
 
-        {/* Drawer for the Shopping Cart */}
-        <CartDrawer />
-        
-        {/* Footer*/}
-        <Footer />
+          {/* Drawer for the Shopping Cart */}
+          <CartDrawer />
+          
+          {/* Footer*/}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
