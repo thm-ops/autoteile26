@@ -17,7 +17,7 @@ cd packages/apps/e2e-tests
 npm install
 npx playwright install --with-deps
 ```
-**Important: The application must be running on http://localhost:3001 before tests start.**
+**Important: The application must be running on http://localhost:3000 before tests start.**
 
 ## Running Tests
 All commands should be run from the E2E directory or use workspace scripts from the project root:
