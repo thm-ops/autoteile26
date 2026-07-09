@@ -26,6 +26,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Build shared
+        run: npm run build:shared
+
       - name: Run tests
         run: npm test
 
@@ -44,6 +47,9 @@ jobs:
 
       - name: Install dependencies
         run: npm ci
+
+      - name: Build shared
+        run: npm run build:shared
 
       - name: Run linter
         run: npm run lint
@@ -66,6 +72,9 @@ jobs:
 
       - name: Setup environment
         run: npm run setup
+
+      - name: Build shared
+        run: npm run build:shared
 
       - name: Build packages
         run: npm run build

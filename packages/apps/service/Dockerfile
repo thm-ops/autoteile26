@@ -27,6 +27,8 @@ WORKDIR /app
 
 COPY --from=deps /app /app
 
+RUN npm run build:shared
+
 WORKDIR /app/packages/apps/service
 
 RUN npm run build
