@@ -3,29 +3,28 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {loginDto, registerDto} from "@autoteile26/shared";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const validatePassword = (pw: string) => {
-    const hasMinLength = pw.length >= 12;
-    const hasLetter = /[a-zA-Z]/.test(pw);
-    const hasNumber = /[0-9]/.test(pw);
-
-    return hasMinLength && hasLetter && hasNumber;
-  };
-
   const handleLogin = async (e: React.SubmitEvent,) => {
     e.preventDefault();
 
+    const validation = loginDto.safeParse({ email, password });
+
+    if (!validation.success) {
+      const errors = validation.error.issues.map((issue) => issue.message);
+      alert(errors.join("\n"));
+      return;
+    }
+
     const result = await signIn("credentials", {
-      email,
-      password,
+      ...validation.data,
       redirect: false,
-    },
-    );
+    });
 
     if (result?.error) {
       alert("Login fehlgeschlagen");
@@ -36,8 +35,10 @@ export default function LoginPage() {
   };
 
   const handleRegister = async () => {
-    if (!validatePassword(password)) {
-      alert("Passwort muss mindestens 12 Zeichen haben und Zahlen + Buchstaben enthalten");
+    const validation = registerDto.safeParse({ email, password })
+    if (!validation.success) {
+      const errors = validation.error.issues.map((issue) => issue.message)
+      alert(errors.join("\n"));
       return;
     }
 
@@ -48,9 +49,8 @@ export default function LoginPage() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, password }),
-    }
-    );
+      body: JSON.stringify(validation.data),
+    });
 
     if (!res.ok) {
       alert("Registrierung fehlgeschlagen");
@@ -88,11 +88,11 @@ export default function LoginPage() {
 
           {/* Email */}
           <div>
-            <label className="text-sm font-medium text-gray-800">
+            <label htmlFor="email" className="text-sm font-medium text-gray-800">
               E-Mail
             </label>
 
-            <input
+            <input id="email"
               type="email"
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg
                          text-gray-900 placeholder-gray-400
@@ -106,11 +106,11 @@ export default function LoginPage() {
 
           {/* Password */}
           <div>
-            <label className="text-sm font-medium text-gray-800">
+            <label htmlFor="password" className="text-sm font-medium text-gray-800">
               Passwort
             </label>
 
-            <input
+            <input id="password"
               type="password"
               className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-lg
                          text-gray-900 placeholder-gray-400
