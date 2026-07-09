@@ -1,6 +1,6 @@
-import Link from "next/link";
-import { ShoppingBag, ArrowLeft } from "lucide-react";
-import { CartComponentVariant } from "../../types/cartComponentVariant";
+import Link from 'next/link';
+import { ShoppingBag, ArrowLeft } from 'lucide-react';
+import { CartComponentVariant } from '../../types/cartComponentVariant';
 
 type CartEmptyStateProps = {
   variant?: CartComponentVariant;
@@ -14,15 +14,13 @@ type CartEmptyStateProps = {
  * @param {function} onCloseDrawer (optional, default: undefined) - Callback function that will be executed when the drawer is closed.
  * @returns {JSX.Element} Empty Cart component.
  */
-export default function CartEmptyState({
-  variant = "page",
-  onCloseDrawer,
-}: CartEmptyStateProps) {
-  const isDrawer = variant === "drawer";
+export default function CartEmptyState({ variant = 'page', onCloseDrawer }: CartEmptyStateProps) {
+  const isDrawer = variant === 'drawer';
 
-  const title = "Dein Warenkorb ist leer";
-  const description = "Derzeit hast du keine Artikel im Warenkorb. Besuche den Shop, um Artikel hinzuzufügen.";
-  const buttonText = "Zurück zum Shop";
+  const title = 'Dein Warenkorb ist leer';
+  const description =
+    'Derzeit hast du keine Artikel im Warenkorb. Besuche den Shop, um Artikel hinzuzufügen.';
+  const buttonText = 'Zurück zum Shop';
 
   // Empty Cart UI for Drawer
   if (isDrawer) {
@@ -48,12 +46,8 @@ export default function CartEmptyState({
       <div className="w-24 h-24 bg-slate-100 rounded-full flex items-center justify-center mb-6">
         <ShoppingBag className="w-12 h-12 text-slate-400" />
       </div>
-      <h1 className="text-3xl font-bold text-slate-900 mb-4">
-        {title}
-      </h1>
-      <p className="text-slate-600 mb-8 max-w-md">
-        {description}
-      </p>
+      <h1 className="text-3xl font-bold text-slate-900 mb-4">{title}</h1>
+      <p className="text-slate-600 mb-8 max-w-md">{description}</p>
       <Link
         href="/"
         className="bg-blue-600 text-white font-semibold py-3 px-8 rounded-lg hover:bg-blue-700 transition-colors inline-flex items-center gap-2"

@@ -2,17 +2,18 @@
 
 [Discord](https://discord.gg/Ktd3vjM4ud)
 
---- 
+---
+
 - [Port Mapping](#port-mapping)
 - [Database](#database)
-- [Development](#development) 
-- [Production](#production) 
+- [Development](#development)
+- [Production](#production)
 - [Docker Debugging & Diagnostics](#docker-debugging--diagnostics)
-- [Docker Compose Lifecycle Overview](#docker-compose-lifecycle-overview) 
-- [PayPal configuration](#paypal-configuration) 
-
+- [Docker Compose Lifecycle Overview](#docker-compose-lifecycle-overview)
+- [PayPal configuration](#paypal-configuration)
 
 ---
+
 ## Requirements
 
     Node ^24
@@ -27,7 +28,7 @@ Both development and production containers run internally on port `3000`.
 Different host ports are used to allow both environments to run in parallel without port conflicts:
 
 | Environment                      | Host Port | Container Port |
-|----------------------------------|-----------|----------------|
+| -------------------------------- | --------- | -------------- |
 | Development (Next.js)            | `3001`    | `3000`         |
 | Production (Next.js)             | `3002`    | `3000`         |
 | Development (Nest.js)            | `8080`    | `3000`         |
@@ -45,6 +46,7 @@ Docker handles the port forwarding automatically through Docker Compose port map
 ---
 
 ## Database
+
 The development environment includes a PostgreSQL container that starts
 automatically with the development stack.
 
@@ -59,10 +61,10 @@ so you can also connect from the host, e.g. with a GUI client.
 
 ---
 
-
 # Development
 
-## Installing dependencies 
+## Installing dependencies
+
 Install dependencies and create the local environment file:
 
 ```bash
@@ -91,7 +93,7 @@ npm run clean
 
 After exectution following URL will be available
 
-* Web [http://localhost:3000](http://localhost:3000)
+- Web [http://localhost:3000](http://localhost:3000)
 
 ---
 
@@ -258,12 +260,17 @@ docker exec -it autoteile26-app-1 sh
 ```
 
 ---
+
 ## Inspect the Database
+
 Check whether the database is accepting connections:
+
 ```bash
 docker exec -it autoteile26-db-dev pg_isready -U autoteile26
 ```
+
 Open a `psql` session:
+
 ```bash
 docker exec -it autoteile26-db-dev psql -U autoteile26 -d autoteile26
 ```
@@ -272,12 +279,12 @@ docker exec -it autoteile26-db-dev psql -U autoteile26 -d autoteile26
 
 # Docker Compose Lifecycle Overview
 
-| Command | Description |
-|---|---|
-| `up --build` | Builds and starts the containers |
-| `start` | Starts previously stopped containers |
-| `stop` | Stops containers without removing them |
-| `down` | Removes containers and Docker Compose networks |
+| Command      | Description                                    |
+| ------------ | ---------------------------------------------- |
+| `up --build` | Builds and starts the containers               |
+| `start`      | Starts previously stopped containers           |
+| `stop`       | Stops containers without removing them         |
+| `down`       | Removes containers and Docker Compose networks |
 
 ---
 
@@ -296,28 +303,25 @@ CTRL + P
 CTRL + Q
 ```
 
-
 ---
+
 # PayPal configuration
 
 PayPal JavaScript SDK via `@paypal/react-paypal-js`
 
 ### Where to get the needed credentials:
+
 1. Log in to the [PayPal Developer Dashboard](https://developer.paypal.com/dashboard/applications/sandbox)
 2. Select **Sandbox** in the top left (sandbox is used for testing)
 3. Click on **Apps & Credentials**
 4. Open **Default Application** or create new REST API app
 5. There you will see the API credentials. Copy them and paste them into `.env`.
 
-
 | PayPal value  | '.env' value                   | Meaning                                                                                                                                     |
-|---------------|--------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------|
+| ------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------- |
 | Client ID     | `NEXT_PUBLIC_PAYPAL_CLIENT_ID` | Public Client ID used by the frontend to load PayPal JavaScript SKD and render PayPal Components (e.g. buttons)                             |
 | Client ID     | `PAYPAL_CLIENT_ID`             | Client ID used by the backend together with the secret (e.g. create PayPal order).                                                          |
 | Client Secret | `PAYPAL_CLIENT_SECRET`         | PayPal API secret. Only used in the backend. Do not expose this value in the frontend.                                                      |
 | REST API URL  | `PAYPAL_BASE_URL`              | PayPal REST API URL for backend requests. Use `https://api-m.sandbox.paypal.com` for testing and `https://api-m.paypal.com` for production. |
-
-
-
 
 ---

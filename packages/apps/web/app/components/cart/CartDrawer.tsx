@@ -12,7 +12,7 @@ export default function CartDrawer() {
   const toggleDrawer = useCartStore((state) => state.toggleDrawer);
   const items = useCartStore((state) => state.items);
   const setCheckoutLocked = useCartStore((state) => state.setCheckoutLocked);
-  
+
   const totalItems = useCartStore(selectTotalItems);
 
   const mounted = useMounted();
@@ -68,7 +68,11 @@ export default function CartDrawer() {
 
         {/* Drawer Footer */}
         {items.length > 0 && (
-          <CartSummary variant="drawer" onCheckout={handleCheckoutClick} onCloseDrawer={toggleDrawer} />
+          <CartSummary
+            variant="drawer"
+            onCheckout={handleCheckoutClick}
+            onCloseDrawer={toggleDrawer}
+          />
         )}
       </div>
     </>

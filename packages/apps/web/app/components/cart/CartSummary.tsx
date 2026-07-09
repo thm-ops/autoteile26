@@ -1,9 +1,9 @@
-import { ShieldCheck } from "lucide-react";
-import Link from "next/link";
-import { useCartStore, selectTotalPrice } from "@/app/domain/cart/cart.store";
-import { formatPrice } from "@/app/utils/formatPrice";
-import CheckoutLockedAlert from "./CheckoutLockedAlert";
-import { CartComponentVariant } from "../../types/cartComponentVariant";
+import { ShieldCheck } from 'lucide-react';
+import Link from 'next/link';
+import { useCartStore, selectTotalPrice } from '@/app/domain/cart/cart.store';
+import { formatPrice } from '@/app/utils/formatPrice';
+import CheckoutLockedAlert from './CheckoutLockedAlert';
+import { CartComponentVariant } from '../../types/cartComponentVariant';
 
 type CartSummaryProps = {
   onCheckout: () => void;
@@ -23,13 +23,13 @@ type CartSummaryProps = {
  */
 export default function CartSummary({
   onCheckout,
-  variant = "page",
+  variant = 'page',
   onCloseDrawer,
 }: CartSummaryProps) {
   const totalPrice = useCartStore(selectTotalPrice);
   const isCheckoutLocked = useCartStore((state) => state.isCheckoutLocked);
 
-  const isDrawer = variant === "drawer";
+  const isDrawer = variant === 'drawer';
 
   // Inner content of the cart summary
   const innerContent = (
@@ -56,9 +56,9 @@ export default function CartSummary({
       <button
         onClick={onCheckout}
         disabled={isCheckoutLocked}
-        className={`w-full bg-blue-600 text-white font-semibold ${isDrawer ? "py-3" : "py-4"} px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isDrawer ? "mb-3" : "mb-4"} flex items-center justify-center gap-2`}
+        className={`w-full bg-blue-600 text-white font-semibold ${isDrawer ? 'py-3' : 'py-4'} px-4 rounded-lg hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${isDrawer ? 'mb-3' : 'mb-4'} flex items-center justify-center gap-2`}
       >
-        {isCheckoutLocked ? "Bezahlung läuft..." : "Mit PayPal bezahlen"}
+        {isCheckoutLocked ? 'Bezahlung läuft...' : 'Mit PayPal bezahlen'}
       </button>
 
       {/* Secure payment information */}
@@ -82,20 +82,14 @@ export default function CartSummary({
 
   // UI for Drawer (without Heading)
   if (isDrawer) {
-    return (
-      <div className="border-t border-slate-200 p-8 bg-slate-50">
-        {innerContent}
-      </div>
-    );
+    return <div className="border-t border-slate-200 p-8 bg-slate-50">{innerContent}</div>;
   }
 
   // UI for Page (with Heading)
   return (
     <div className="w-full lg:w-96">
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 sticky top-24">
-        <h2 className="text-xl font-semibold text-slate-900 mb-6">
-          Zusammenfassung
-        </h2>
+        <h2 className="text-xl font-semibold text-slate-900 mb-6">Zusammenfassung</h2>
         {innerContent}
       </div>
     </div>

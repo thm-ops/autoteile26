@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import { ProductView } from "../product/product.view";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import { ProductView } from '../product/product.view';
 
 export interface CartItem extends ProductView {
   quantity: number;
@@ -48,16 +48,12 @@ export const useCartStore = create<CartState>()(
           // When checkout is locked the state cannot be modified.
           if (state.isCheckoutLocked) return state;
 
-          const existingItem = state.items.find(
-            (item) => item.id === product.id,
-          );
+          const existingItem = state.items.find((item) => item.id === product.id);
           if (existingItem) {
             // If item exists, increment quantity
             return {
               items: state.items.map((item) =>
-                item.id === product.id
-                  ? { ...item, quantity: item.quantity + 1 }
-                  : item,
+                item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
               ),
             };
           }
@@ -106,7 +102,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: "cart-storage",
+      name: 'cart-storage',
       // persists only cart items, not UI state
       partialize: (state) => ({ items: state.items }),
     },
