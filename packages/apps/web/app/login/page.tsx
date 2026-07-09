@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const validatePassword = (pw: string) => {
     const hasMinLength = pw.length >= 12;
@@ -17,80 +17,70 @@ export default function LoginPage() {
     return hasMinLength && hasLetter && hasNumber;
   };
 
-  const handleLogin = async (e: React.SubmitEvent,) => {
+  const handleLogin = async (e: React.SubmitEvent) => {
     e.preventDefault();
 
-    const result = await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    },
-    );
-
-    if (result?.error) {
-      alert("Login fehlgeschlagen");
-      return;
-    }
-
-    router.push("/");
-  };
-
-  const handleRegister = async () => {
-    if (!validatePassword(password)) {
-      alert("Passwort muss mindestens 12 Zeichen haben und Zahlen + Buchstaben enthalten");
-      return;
-    }
-
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-    const res = await fetch(`${baseUrl}/auth/register`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    }
-    );
-
-    if (!res.ok) {
-      alert("Registrierung fehlgeschlagen");
-      return;
-    }
-
-    const result = await signIn("credentials", {
+    const result = await signIn('credentials', {
       email,
       password,
       redirect: false,
     });
 
     if (result?.error) {
-      alert("Auto-Login fehlgeschlagen");
+      alert('Login fehlgeschlagen');
       return;
     }
 
-    router.push("/");
+    router.push('/');
+  };
+
+  const handleRegister = async () => {
+    if (!validatePassword(password)) {
+      alert('Passwort muss mindestens 12 Zeichen haben und Zahlen + Buchstaben enthalten');
+      return;
+    }
+
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+
+    const res = await fetch(`${baseUrl}/auth/register`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (!res.ok) {
+      alert('Registrierung fehlgeschlagen');
+      return;
+    }
+
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      alert('Auto-Login fehlgeschlagen');
+      return;
+    }
+
+    router.push('/');
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-200">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
-
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center text-gray-900">
-          Login
-        </h1>
+        <h1 className="text-2xl font-bold text-center text-gray-900">Login</h1>
 
-        <p className="text-center text-gray-700 mt-1 mb-6">
-          Melde dich in deinem Konto an
-        </p>
+        <p className="text-center text-gray-700 mt-1 mb-6">Melde dich in deinem Konto an</p>
 
         <form onSubmit={handleLogin} className="space-y-4">
-
           {/* Email */}
           <div>
-            <label className="text-sm font-medium text-gray-800">
-              E-Mail
-            </label>
+            <label className="text-sm font-medium text-gray-800">E-Mail</label>
 
             <input
               type="email"
@@ -106,9 +96,7 @@ export default function LoginPage() {
 
           {/* Password */}
           <div>
-            <label className="text-sm font-medium text-gray-800">
-              Passwort
-            </label>
+            <label className="text-sm font-medium text-gray-800">Passwort</label>
 
             <input
               type="password"
@@ -140,7 +128,6 @@ export default function LoginPage() {
           >
             Registrieren
           </button>
-
         </form>
       </div>
     </div>

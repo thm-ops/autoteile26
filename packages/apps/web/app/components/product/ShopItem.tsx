@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { formatPrice } from "@/app/utils/formatPrice";
-import { ProductView } from "@/app/domain/product";
-import { useCartStore } from "@/app/domain/cart/cart.store";
-import { ShoppingCart } from "lucide-react";
+import Image from 'next/image';
+import Link from 'next/link';
+import { formatPrice } from '@/app/utils/formatPrice';
+import { ProductView } from '@/app/domain/product';
+import { useCartStore } from '@/app/domain/cart/cart.store';
+import { ShoppingCart } from 'lucide-react';
 
 type ShopItemProps = {
   product: ProductView;
@@ -21,10 +21,10 @@ export default function ShopItem({ product }: ShopItemProps) {
   return (
     <div className="max-w-sm rounded overflow-hidden shadow-lg bg-card">
       <Image
-        src={image || "https://placehold.co/600x400"}
+        src={image || 'https://placehold.co/600x400'}
         width={600}
         height={400}
-        alt={imageAlt || "Placeholder Image"}
+        alt={imageAlt || 'Placeholder Image'}
         unoptimized={true}
       />
       <div className="px-6 py-4">

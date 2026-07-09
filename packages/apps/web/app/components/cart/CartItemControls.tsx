@@ -7,7 +7,6 @@ type CartItemControlsProps = {
   isReadOnly?: boolean;
 };
 
-
 /**
  * Cart item controls component to increase or decrease the quantity of a cartitem. This component has also a remove button.
  * If isReadOnly is true, the component will only display the quantity of the cartitem.
@@ -16,7 +15,11 @@ type CartItemControlsProps = {
  * @param {boolean} isReadOnly - If true, the component will not display the quantity controls.
  * @returns {JSX.Element} A component to increase, decrease the quantity or remove a cartitem.
  */
-export default function CartItemControls({ itemId, quantity, isReadOnly = false }: CartItemControlsProps) {
+export default function CartItemControls({
+  itemId,
+  quantity,
+  isReadOnly = false,
+}: CartItemControlsProps) {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
 
@@ -47,7 +50,7 @@ export default function CartItemControls({ itemId, quantity, isReadOnly = false 
           <Plus className="w-4 h-4" />
         </button>
       </div>
-      
+
       <button
         type="button"
         onClick={() => removeItem(itemId)}

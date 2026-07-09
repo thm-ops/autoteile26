@@ -1,6 +1,6 @@
-import CartItem from "./CartItem";
-import { useCartStore } from "@/app/domain/cart/cart.store";
-import { CartComponentVariant } from "../../types/cartComponentVariant";
+import CartItem from './CartItem';
+import { useCartStore } from '@/app/domain/cart/cart.store';
+import { CartComponentVariant } from '../../types/cartComponentVariant';
 
 type CartItemListProps = {
   variant?: CartComponentVariant;
@@ -12,11 +12,11 @@ type CartItemListProps = {
  * @param {string} variant (optional, default: 'page') - The variant of the list. Can be 'page' or 'drawer'.
  * @returns {JSX.Element} Cart Item List component.
  */
-export default function CartItemList({ variant = "page" }: CartItemListProps) {
+export default function CartItemList({ variant = 'page' }: CartItemListProps) {
   const items = useCartStore((state) => state.items);
   const isCheckoutLocked = useCartStore((state) => state.isCheckoutLocked);
 
-  const isDrawer = variant === "drawer";
+  const isDrawer = variant === 'drawer';
 
   // UI for Drawer
   if (isDrawer) {

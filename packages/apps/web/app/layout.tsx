@@ -1,13 +1,13 @@
 // app/layout.tsx
-import type { Metadata } from "next";
-import Header from "@/app/components/Header";
-import CartDrawer from "./components/cart/CartDrawer";
-import "./globals.css";
-import Providers from "./provider";
+import type { Metadata } from 'next';
+import Header from '@/app/components/Header';
+import CartDrawer from './components/cart/CartDrawer';
+import './globals.css';
+import Providers from './provider';
 
 export const metadata: Metadata = {
-  title: "Autoteile26",
-  description: "Dein Online-Shop für Autoteile",
+  title: 'Autoteile26',
+  description: 'Dein Online-Shop für Autoteile',
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
@@ -18,9 +18,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           {/* Header*/}
           <Header />
 
-          <main className="flex-1">
-            {children}
-          </main>
+          <main className="flex-1">{children}</main>
           {/* Drawer for the Shopping Cart */}
           <CartDrawer />
         </Providers>
