@@ -1,7 +1,7 @@
 {
   "name": "@autoteile26/shared",
   "version": "0.0.0",
-  "description": "Everything shared between the apps",
+  "description": "Everything shared between the web and service package",
   "license": "MIT",
   "author": "",
   "type": "module",
