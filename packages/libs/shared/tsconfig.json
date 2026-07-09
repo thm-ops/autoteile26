@@ -1,0 +1,9 @@
+{
+  "extends": "@autoteile26/ts-config",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true
+  }
+}

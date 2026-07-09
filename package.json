@@ -9,7 +9,7 @@
     "packages/libs/*"
   ],
   "scripts": {
-    "dev": "npm run copy_env_web && docker compose -f docker-compose.dev.yml up -d && concurrently -n \"next,service\" \"npm run dev:web\" \"npm run start:dev:service\"",
+    "dev": "npm run copy_env_web && docker compose -f docker-compose.dev.yml up -d && concurrently -n \"shared,next,service\" \"npm run dev:shared\" \"npm run dev:web\" \"npm run start:dev:service\"",
     "prod": "docker compose up --build",
     "start": "docker-compose up --build",
     "clean": "npm run clean --workspaces --if-present",
@@ -45,7 +45,9 @@
     "migration:run:service": "npm run migration:run --workspace=@autoteile26/service",
     "migration:revert:service": "npm run migration:revert --workspace=@autoteile26/service",
     "migration:show:service": "npm run migration:show --workspace=@autoteile26/service",
-    "copy_env_web": "cp .env packages/apps/web/.env"
+    "copy_env_web": "cp .env packages/apps/web/.env",
+    "build:shared": "npm run build --workspace=@autoteile26/shared",
+    "dev:shared": "npm run dev --workspace=@autoteile26/shared"
   },
   "devDependencies": {
     "@types/bcrypt": "^6.0.0",
