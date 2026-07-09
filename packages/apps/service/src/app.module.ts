@@ -4,11 +4,15 @@ import { AppService } from './app.service';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
+import { TagModule } from './tag/tag.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolve } from 'node:path';
 import configDatabase from './config/config.database';
 import { User } from './user/user.entity';
+import { Product } from './product/product.entity';
+import { Tag } from './tag/tag.entity';
 
 @Module({
   imports: [
@@ -24,6 +28,8 @@ import { User } from './user/user.entity';
     }),
     UserModule,
     AuthModule,
+    ProductModule,
+    TagModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -36,7 +42,7 @@ import { User } from './user/user.entity';
           host: configService.get('database.host')!,
           synchronize: false,
           logging: true,
-          entities: [User],
+          entities: [User, Product, Tag],
         };
       },
     }),
@@ -44,4 +50,4 @@ import { User } from './user/user.entity';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule { }
+export class AppModule {}

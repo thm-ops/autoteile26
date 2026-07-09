@@ -1,14 +1,13 @@
-import { 
-  Entity, 
-  Column, 
-  PrimaryGeneratedColumn, 
-  CreateDateColumn, 
-  UpdateDateColumn 
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity()
 export class User {
-
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -23,5 +22,4 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt!: Date;
-
 }
