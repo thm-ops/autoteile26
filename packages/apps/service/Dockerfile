@@ -49,6 +49,7 @@ WORKDIR /app/packages/apps/service
 
 COPY --chown=node:node --from=builder /app/node_modules /app/node_modules
 COPY --chown=node:node --from=builder /app/packages/apps/service/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/packages/libs/shared /app/packages/libs/shared
 COPY --chown=node:node --from=builder /app/packages/apps/service/dist ./dist
 COPY --chown=node:node packages/apps/service/healthcheck.js .
 
