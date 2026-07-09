@@ -20,7 +20,10 @@ async function seed() {
     return;
   }
 
-  const existingUser = await userService.validateUser(adminEmail, adminPassword);
+  const existingUser = await userService.validateUser(
+    adminEmail,
+    adminPassword,
+  );
 
   if (!existingUser) {
     await userService.createUser(adminEmail, adminPassword);
@@ -32,4 +35,4 @@ async function seed() {
   await app.close();
 }
 
-seed();
+void seed();
