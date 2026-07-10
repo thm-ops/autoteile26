@@ -23,6 +23,8 @@ build
 # Test / coverage
 coverage
 **/coverage
+**/playwright-report
+**/test-results
 
 # Credentials / env files
 .env
