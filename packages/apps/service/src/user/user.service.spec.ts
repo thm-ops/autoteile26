@@ -41,7 +41,10 @@ describe('UserService', () => {
     mockRepository.create.mockReturnValue(mockUser);
     mockRepository.save.mockResolvedValue(mockUser);
 
-    const result = await service.createUser('admin@autoteile26.de', 'password123');
+    const result = await service.createUser(
+      'admin@autoteile26.de',
+      'password123',
+    );
 
     expect(mockRepository.create).toHaveBeenCalled();
     expect(mockRepository.save).toHaveBeenCalled();
@@ -50,18 +53,30 @@ describe('UserService', () => {
 
   it('should return user if credentials are valid', async () => {
     const hashedPassword = await bcrypt.hash('password123', 10);
-    mockRepository.findOne.mockResolvedValue({ ...mockUser, password: hashedPassword });
+    mockRepository.findOne.mockResolvedValue({
+      ...mockUser,
+      password: hashedPassword,
+    });
 
-    const result = await service.validateUser('admin@autoteile26.de', 'password123');
+    const result = await service.validateUser(
+      'admin@autoteile26.de',
+      'password123',
+    );
 
     expect(result).not.toBeNull();
   });
 
   it('should return null if credentials are invalid', async () => {
     const hashedPassword = await bcrypt.hash('password123', 10);
-    mockRepository.findOne.mockResolvedValue({ ...mockUser, password: hashedPassword });
+    mockRepository.findOne.mockResolvedValue({
+      ...mockUser,
+      password: hashedPassword,
+    });
 
-    const result = await service.validateUser('admin@autoteile26.de', 'wrongpassword');
+    const result = await service.validateUser(
+      'admin@autoteile26.de',
+      'wrongpassword',
+    );
 
     expect(result).toBeNull();
   });

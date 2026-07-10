@@ -1,0 +1,22 @@
+{
+  "name": "@autoteile26/shared",
+  "version": "0.0.0",
+  "description": "Everything shared between the web and service package",
+  "license": "MIT",
+  "author": "",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
+}
