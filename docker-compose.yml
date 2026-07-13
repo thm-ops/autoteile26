@@ -31,6 +31,10 @@ services:
       POSTGRES_HOST: postgres
       POSTGRES_PORT: 5432
       JWT_SECRET: ${JWT_SECRET}
+      # PayPal is called from the backend; the secret never reaches the client.
+      PAYPAL_BASE_URL: ${PAYPAL_BASE_URL}
+      PAYPAL_CLIENT_ID: ${PAYPAL_CLIENT_ID}
+      PAYPAL_CLIENT_SECRET: ${PAYPAL_CLIENT_SECRET}
   postgres:
     image: postgres:18
     restart: unless-stopped

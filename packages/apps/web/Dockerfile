@@ -20,6 +20,8 @@ ENV NEXT_PUBLIC_PAYPAL_CLIENT_ID=$NEXT_PUBLIC_PAYPAL_CLIENT_ID
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL
 
+# Build the shared workspace first so @autoteile26/shared/dist exists for the web build.
+RUN npm run build:shared
 RUN npm run build --workspace=@autoteile26/web
 
 # -----------------------------------------------------------------------------
