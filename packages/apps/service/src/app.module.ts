@@ -2,11 +2,17 @@ import { Module } from '@nestjs/common';
 import { HealthModule } from './health/health.module';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ProductModule } from './product/product.module';
+import { TagModule } from './tag/tag.module';
+import { PaymentModule } from './payment/payment.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { resolve } from 'node:path';
 import configDatabase from './config/config.database';
+import configPaypal from './config/config.paypal';
 import { User } from './user/user.entity';
+import { Product } from './product/product.entity';
+import { Tag } from './tag/tag.entity';
 
 @Module({
   imports: [
@@ -18,10 +24,13 @@ import { User } from './user/user.entity';
         resolve(process.cwd(), '.env'),
         resolve(process.cwd(), '../../../.env'),
       ],
-      load: [configDatabase],
+      load: [configDatabase, configPaypal],
     }),
     UserModule,
     AuthModule,
+    ProductModule,
+    TagModule,
+    PaymentModule,
     TypeOrmModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -34,7 +43,7 @@ import { User } from './user/user.entity';
           host: configService.get('database.host')!,
           synchronize: false,
           logging: true,
-          entities: [User],
+          entities: [User, Product, Tag],
         };
       },
     }),
