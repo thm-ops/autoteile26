@@ -1,13 +1,16 @@
 "use client"
 
+import { useState } from "react";
 import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 type InstantBuyButtonPaypalProps = {
-    productId:string,
+    productId: string,
 };
 
 export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPaypalProps) {
     const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
     if (!clientId) {
         return <p className="text-red-600">PayPal ClientID fehlt.</p>
@@ -19,7 +22,7 @@ export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPa
                 options={{
                     clientId: clientId,
                     currency: "EUR",
-                    intent : "capture",
+                    intent: "capture",
                 }}
             >
                 <PayPalButtons
@@ -30,8 +33,51 @@ export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPa
                         label: "buynow",
                         height: 45,
                     }}
-                    ></PayPalButtons>
+                    // The order is created server-side; the client only sends the
+                    // product id. The price is resolved from the trusted product
+                    // record in the backend, never from the browser.
+                    createOrder={async () => {
+                        const res = await fetch(`${apiUrl}/payments/orders`, {
+                            method: "POST",
+                            headers: { "Content-Type": "application/json" },
+                            body: JSON.stringify({ productId }),
+                        });
+
+                        if (!res.ok) {
+                            setStatus("error");
+                            throw new Error("Order could not be created");
+                        }
+
+                        const order = (await res.json()) as { id: string };
+                        return order.id;
+                    }}
+                    // The capture is performed and verified server-side.
+                    onApprove={async (data) => {
+                        const res = await fetch(
+                            `${apiUrl}/payments/orders/${data.orderID}/capture`,
+                            {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                            },
+                        );
+
+                        if (!res.ok) {
+                            setStatus("error");
+                            throw new Error("Payment could not be completed");
+                        }
+
+                        setStatus("success");
+                    }}
+                    onError={() => setStatus("error")}
+                />
             </PayPalScriptProvider>
+
+            {status === "success" && (
+                <p className="text-green-600 mt-2">Zahlung erfolgreich!</p>
+            )}
+            {status === "error" && (
+                <p className="text-red-600 mt-2">Zahlung fehlgeschlagen.</p>
+            )}
         </div>
     )
 }
