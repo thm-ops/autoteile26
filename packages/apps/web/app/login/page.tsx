@@ -42,7 +42,8 @@ export default function LoginPage() {
       return;
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+    // Empty base => relative, same-origin request proxied by the Next server.
+    const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
 
     const res = await fetch(`${baseUrl}/auth/register`, {
       method: "POST",

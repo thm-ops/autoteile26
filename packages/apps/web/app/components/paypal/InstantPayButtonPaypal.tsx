@@ -9,7 +9,8 @@ type InstantBuyButtonPaypalProps = {
 
 export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPaypalProps) {
     const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    // Empty base => relative, same-origin requests proxied by the Next server.
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
     const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
 
     if (!clientId) {
