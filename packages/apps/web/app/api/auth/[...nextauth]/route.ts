@@ -12,7 +12,10 @@ const handler = NextAuth({
             },
 
             async authorize(credentials) {
-                const baseUrl = process.env.NEXT_PUBLIC_API_URL;
+                // Runs server-side, so it must reach the service directly via
+                // an absolute URL (the same-origin proxy only exists for the
+                // browser). API_PROXY_TARGET is the internal service address.
+                const baseUrl = process.env.API_PROXY_TARGET ?? "http://localhost:3001";
 
                 const res = await fetch(`${baseUrl}/auth/login`, {
                     method: "POST",
