@@ -133,6 +133,7 @@ export class PaymentService {
     }
 
     return { id: capture.id, status: capture.status };
+  }
 
   /**
    * Exchanges the client credentials for a short-lived access token.
