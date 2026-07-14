@@ -32,6 +32,10 @@ export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPa
                         shape: "rect",
                         label: "buynow",
                         height: 45,
+                        // PayPal renders a fixed dark-coloured tagline under the
+                        // button that is unreadable on our dark background and
+                        // cannot be recoloured, so we disable it.
+                        tagline: false,
                     }}
                     // The order is created server-side; the client only sends the
                     // product id. The price is resolved from the trusted product
@@ -71,6 +75,10 @@ export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPa
                     onError={() => setStatus("error")}
                 />
             </PayPalScriptProvider>
+
+            <p className="text-white text-sm text-center mt-2">
+                Überall schnell und sicher zahlen
+            </p>
 
             {status === "success" && (
                 <p className="text-green-600 mt-2">Zahlung erfolgreich!</p>
