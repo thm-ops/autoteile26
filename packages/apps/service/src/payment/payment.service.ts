@@ -125,7 +125,7 @@ export class PaymentService {
     const captureStatus =
       capture.purchase_units?.[0]?.payments?.captures?.[0]?.status;
 
-    if (capture.status !== 'COMPLETED' && captureStatus !== 'COMPLETED') {
+    if (capture.status !== 'COMPLETED' || captureStatus !== 'COMPLETED') {
       this.logger.error(
         `PayPal capture not completed: order=${capture.status} capture=${captureStatus}`,
       );
@@ -133,7 +133,6 @@ export class PaymentService {
     }
 
     return { id: capture.id, status: capture.status };
-  }
 
   /**
    * Exchanges the client credentials for a short-lived access token.
