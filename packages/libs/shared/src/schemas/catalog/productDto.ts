@@ -7,7 +7,7 @@ const productShape = {
     brand: z.string().max(255).nullable().optional(),
     manufacturerPartNumber: z.string().max(255).nullable().optional(),
     price: z.string().regex(/^\d+(\.\d{1,2})?$/, 'Price must be a decimal string, e.g. "19.99"'),
-    currency: z.string().length(3).optional(),
+    currency: z.string().regex(/^[A-Z]{3}$/, 'Currency must be a 3-letter uppercase code, e.g. "EUR"').optional(),
     stockQuantity: z.number().int().nonnegative().optional(),
     isActive: z.boolean().optional(),
 }
