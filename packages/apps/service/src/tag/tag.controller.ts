@@ -6,12 +6,15 @@ import {
   Param,
   Patch,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { Tag } from './tag.entity';
 import { createTagDto, updateTagDto } from '@autoteile26/shared';
 import type { CreateTagDto, UpdateTagDto } from '@autoteile26/shared';
 import { ZodValidationPipe } from '../validation/ZodValidationPipe';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { AdminGuard } from '../auth/guards/admin.guard';
 
 @Controller('tags')
 export class TagController {
@@ -28,6 +31,7 @@ export class TagController {
   }
 
   @Post()
+  @UseGuards(JwtAuthGuard, AdminGuard)
   create(
     @Body(new ZodValidationPipe(createTagDto)) body: CreateTagDto,
   ): Promise<Tag> {
@@ -35,6 +39,7 @@ export class TagController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   update(
     @Param('id') id: string,
     @Body(new ZodValidationPipe(updateTagDto)) body: UpdateTagDto,
@@ -47,6 +52,7 @@ export class TagController {
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, AdminGuard)
   remove(@Param('id') id: string): Promise<void> {
     return this.tagService.remove(id);
   }
