@@ -84,6 +84,9 @@ export class PaymentService {
           },
         ],
       }),
+    }).catch((error) => {
+      this.logger.error(`PayPal create order request failed: ${String(error)}`);
+      throw new BadGatewayException('Failed to create PayPal order');
     });
 
     if (!response.ok) {
