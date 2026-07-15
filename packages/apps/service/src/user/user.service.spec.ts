@@ -8,6 +8,7 @@ const mockUser: User = {
   id: 'uuid-123',
   email: 'admin@autoteile26.de',
   password: '$2b$10$hashedpassword',
+  isAdmin: false,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

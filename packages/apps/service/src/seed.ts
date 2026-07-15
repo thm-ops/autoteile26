@@ -108,8 +108,11 @@ async function seed() {
   );
 
   if (!existingUser) {
-    await userService.createUser(adminEmail, adminPassword);
+    await userService.createUser(adminEmail, adminPassword, true);
     console.log('Admin user created successfully.');
+  } else if (!existingUser.isAdmin) {
+    await userService.setAdmin(existingUser.id, true);
+    console.log('Existing admin user promoted to admin.');
   } else {
     console.log('Admin user already exists.');
   }
