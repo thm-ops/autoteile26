@@ -9,6 +9,9 @@ import {
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { Product } from './product.entity';
+import { createProductDto, updateProductDto } from '@autoteile26/shared';
+import type { CreateProductDto, UpdateProductDto } from '@autoteile26/shared';
+import { ZodValidationPipe } from '../validation/ZodValidationPipe';
 
 @Controller('products')
 export class ProductController {
@@ -25,16 +28,18 @@ export class ProductController {
   }
 
   @Post()
-  create(@Body() createProductDto: Partial<Product>): Promise<Product> {
-    return this.productService.create(createProductDto);
+  create(
+    @Body(new ZodValidationPipe(createProductDto)) body: CreateProductDto,
+  ): Promise<Product> {
+    return this.productService.create(body as Partial<Product>);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateProductDto: Partial<Product>,
+    @Body(new ZodValidationPipe(updateProductDto)) body: UpdateProductDto,
   ): Promise<Product> {
-    return this.productService.update(id, updateProductDto);
+    return this.productService.update(id, body as Partial<Product>);
   }
 
   @Delete(':id')

@@ -9,6 +9,9 @@ import {
 } from '@nestjs/common';
 import { TagService } from './tag.service';
 import { Tag } from './tag.entity';
+import { createTagDto, updateTagDto } from '@autoteile26/shared';
+import type { CreateTagDto, UpdateTagDto } from '@autoteile26/shared';
+import { ZodValidationPipe } from '../validation/ZodValidationPipe';
 
 @Controller('tags')
 export class TagController {
@@ -25,16 +28,22 @@ export class TagController {
   }
 
   @Post()
-  create(@Body() createTagDto: Partial<Tag>): Promise<Tag> {
-    return this.tagService.create(createTagDto);
+  create(
+    @Body(new ZodValidationPipe(createTagDto)) body: CreateTagDto,
+  ): Promise<Tag> {
+    return this.tagService.create(body);
   }
 
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateTagDto: Partial<Tag>,
+    @Body(new ZodValidationPipe(updateTagDto)) body: UpdateTagDto,
   ): Promise<Tag> {
-    return this.tagService.update(id, updateTagDto);
+    // Zod's inferred type includes an explicit `| undefined` on optional
+    // fields, which exactOptionalPropertyTypes treats as distinct from
+    // Partial<Tag>'s implicitly-optional fields. Zod itself never sets an
+    // omitted key to `undefined`, so the shapes match at runtime.
+    return this.tagService.update(id, body as Partial<Tag>);
   }
 
   @Delete(':id')
