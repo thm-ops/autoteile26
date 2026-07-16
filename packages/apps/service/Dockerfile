@@ -59,5 +59,4 @@ HEALTHCHECK --interval=5s --timeout=3s --start-period=20s --retries=10 CMD ["nod
 USER node
 
 EXPOSE 3000
-
-ENTRYPOINT ["node", "dist/main.js"]
+ENTRYPOINT ["sh", "-c", "node ./node_modules/typeorm/cli.js migration:run -d dist/database/data-source.js && node dist/seed.js && exec node dist/main.js"]

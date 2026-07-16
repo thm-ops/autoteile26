@@ -15,15 +15,39 @@ export class UserService {
    * Creates a new user with a hashed password.
    * @param email - The email address of the user.
    * @param password - The plain text password to be hashed.
+   * @param isAdmin - Whether the user should be granted admin privileges. Defaults to false.
    * @returns The created User entity.
    */
-  async createUser(email: string, password: string): Promise<User> {
+  async createUser(
+    email: string,
+    password: string,
+    isAdmin = false,
+  ): Promise<User> {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = this.userRepository.create({
       email,
       password: hashedPassword,
+      isAdmin,
     });
     return this.userRepository.save(user);
+  }
+
+  /**
+   * Finds a user by id.
+   * @param id - The id of the user.
+   * @returns The User entity if found, or null otherwise.
+   */
+  async findById(id: string): Promise<User | null> {
+    return this.userRepository.findOne({ where: { id } });
+  }
+
+  /**
+   * Grants or revokes admin privileges for an existing user.
+   * @param id - The id of the user.
+   * @param isAdmin - Whether the user should be an admin.
+   */
+  async setAdmin(id: string, isAdmin: boolean): Promise<void> {
+    await this.userRepository.update(id, { isAdmin });
   }
 
   /**

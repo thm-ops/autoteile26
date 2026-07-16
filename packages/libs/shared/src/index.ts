@@ -1,2 +1,5 @@
 export * from "./schemas/auth/registerDto.js"
 export * from "./schemas/auth/loginDto.js"
+export * from "./schemas/payment/createOrderDto.js"
+export * from "./schemas/catalog/productDto.js"
+export * from "./schemas/catalog/tagDto.js"

@@ -20,6 +20,12 @@ ENV NEXT_PUBLIC_PAYPAL_CLIENT_ID=$NEXT_PUBLIC_PAYPAL_CLIENT_ID
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_URL=$NEXT_PUBLIC_URL
 
+# The same-origin API proxy target is baked into rewrites at build time.
+ARG API_PROXY_TARGET
+ENV API_PROXY_TARGET=$API_PROXY_TARGET
+
+# Build the shared workspace first so @autoteile26/shared/dist exists for the web build.
+RUN npm run build:shared
 RUN npm run build --workspace=@autoteile26/web
 
 # -----------------------------------------------------------------------------
