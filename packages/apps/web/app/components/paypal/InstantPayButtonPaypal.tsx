@@ -5,9 +5,10 @@ import { PayPalButtons, PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 type InstantBuyButtonPaypalProps = {
     productId: string,
+    currency?: string,
 };
 
-export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPaypalProps) {
+export default function PayPalInstantBuyButton({ productId, currency = "EUR" }: InstantBuyButtonPaypalProps) {
     const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
     // Empty base => relative, same-origin requests proxied by the Next server.
     const apiUrl = process.env.NEXT_PUBLIC_API_URL ?? "";
@@ -22,7 +23,7 @@ export default function PayPalInstantBuyButton({ productId }: InstantBuyButtonPa
             <PayPalScriptProvider
                 options={{
                     clientId: clientId,
-                    currency: "EUR",
+                    currency: currency,
                     intent: "capture",
                 }}
             >
