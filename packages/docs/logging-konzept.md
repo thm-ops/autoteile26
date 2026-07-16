@@ -1,57 +1,73 @@
-# Logging-Konzept für den Zahlungsprozess
+# Logging Concept for the Payment Process
 
-## Ziel
+## Purpose
 
-Das Logging dient dazu, Fehler schnell zu erkennen und den Ablauf von Zahlungen nachvollziehen zu können, ohne sensible Daten zu speichern.
-
----
-
-## Welche Ereignisse sollten geloggt werden?
-
-- Benutzer meldet sich an
-- Zahlung wird gestartet
-- Zahlung erfolgreich abgeschlossen
-- Zahlung fehlgeschlagen
-- API-Fehler
-- Datenbankfehler
-- Serverfehler
+Logging helps detect errors quickly and makes payment processes traceable without storing sensitive data.
 
 ---
 
-## Welche Daten dürfen NICHT geloggt werden?
+## Which events should be logged?
 
-Folgende Informationen dürfen niemals in Log-Dateien gespeichert werden:
-
-- Passwörter
-- Kreditkartennummern
-- CVV
-- vollständige IBAN
-- PayPal-Zugangsdaten
-- Tokens
-- Session-IDs
-
----
-
-## Sinnvolle Log-Level
-
-| Log-Level | Bedeutung |
-|-----------|-----------|
-| INFO | normale Abläufe |
-| WARN | ungewöhnliche Ereignisse |
-| ERROR | Fehler |
-| DEBUG | nur während der Entwicklung |
+- User login attempts
+- Payment started
+- Payment completed successfully
+- Payment failed
+- API errors
+- Database errors
+- Server errors
+- Changes to the order or payment status
+- Refunds and cancellations
 
 ---
 
-## Sicherheitsmaßnahmen
+## Which data must NOT be logged?
 
-- Zugriff auf Log-Dateien einschränken
-- Logs regelmäßig archivieren
-- Logs vor Manipulation schützen
-- personenbezogene Daten anonymisieren
+The following information must never be stored in log files:
+
+- Passwords
+- Full credit card numbers
+- CVV or CVC codes
+- Full IBANs
+- PayPal credentials
+- Access tokens
+- Session IDs
+- API secrets
+- Sensitive personal data that is not required for troubleshooting
+
+Where identifiers are necessary, they should be masked or pseudonymized.
 
 ---
 
-## Fazit
+## Recommended log levels
 
-Ein gutes Logging hilft dabei, Fehler schneller zu finden und den Zahlungsprozess sicher zu überwachen, ohne vertrauliche Daten preiszugeben.
+| Log level | Meaning |
+|-----------|---------|
+| INFO | Normal and successful events |
+| WARN | Unusual events that do not stop the application |
+| ERROR | Failed operations and errors |
+| DEBUG | Detailed information for development only |
+
+---
+
+## Security measures
+
+- Restrict access to log files
+- Protect logs against unauthorized modification and deletion
+- Archive logs regularly
+- Define suitable retention periods
+- Anonymize or pseudonymize personal data
+- Encrypt log transmission where necessary
+- Prevent log injection by validating user-controlled input
+- Monitor security-relevant events
+
+---
+
+## Example log entries
+
+Good examples:
+
+```text
+INFO payment_started orderId=4711
+INFO payment_completed orderId=4711 status=CAPTURED
+WARN payment_provider_timeout orderId=4711
+ERROR payment_failed orderId=4711 errorCode=PAYMENT_DECLINED
